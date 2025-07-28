@@ -27,7 +27,7 @@
     "divination",
     "ai"
   ],
-  "author": "Your Name",
+  "author": "Morax",
   "license": "MIT",
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",

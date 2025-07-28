@@ -2,6 +2,22 @@
 
 A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot card readings, built with Node.js and TypeScript. This server provides comprehensive tarot functionality through both MCP protocol and HTTP API endpoints, featuring research-based interpretations and advanced reading analysis.
 
+## 🚀 Current Implementation Status
+
+**✅ FULLY IMPLEMENTED AND WORKING:**
+- Complete 78-card Rider-Waite deck with detailed interpretations
+- 11 professional tarot spreads (Single Card, Three Card, Celtic Cross, Horseshoe, Relationship Cross, Career Path, Decision Making, Spiritual Guidance, Year Ahead, Chakra Alignment, Shadow Work)
+- Multi-transport MCP server (stdio, HTTP, SSE)
+- Advanced interpretation engine with elemental analysis
+- Cryptographically secure card shuffling and drawing
+- Context-aware meaning selection
+- Professional-grade HTTP API with CORS support
+- Docker containerization with health checks
+- Comprehensive search and analytics tools
+- Session management and reading history
+- Full TypeScript implementation with strict typing
+- Jest testing framework setup
+
 ## ✨ Features
 
 ### 🃏 Professional Tarot System
@@ -55,7 +71,7 @@ Here's what a professional Celtic Cross reading looks like:
 - ✅ Elemental balance assessment (Fire energy dominance)
 - ✅ Professional guidance and actionable insights
 
-## � Professional Tarot Spreads
+## 🔮 Professional Tarot Spreads
 
 Our server features **11 specialized tarot spreads** designed for different life areas and spiritual practices:
 
@@ -67,16 +83,16 @@ Our server features **11 specialized tarot spreads** designed for different life
 
 ### 💕 Relationships & Personal
 - **Relationship Cross**: 7-card relationship dynamics analysis
-- **Decision Making**: 5-card choice evaluation and guidance
-- **Shadow Work**: 5-card psychological integration and growth
 
 ### 🚀 Career & Life Path
 - **Career Path**: 6-card professional development guidance
+- **Decision Making**: 5-card choice evaluation and guidance
 - **Year Ahead**: 13-card annual forecast with monthly insights
 
 ### 🧘 Spiritual & Energy Work
 - **Spiritual Guidance**: 6-card spiritual development and higher self connection
 - **Chakra Alignment**: 7-card energy center analysis and healing
+- **Shadow Work**: 5-card psychological integration and growth
 
 Each spread includes:
 - **Specialized Analysis**: Tailored interpretation methods for each spread type
@@ -84,7 +100,7 @@ Each spread includes:
 - **Energy Assessment**: Elemental balance and flow analysis
 - **Professional Guidance**: Actionable insights and spiritual wisdom
 
-## �🏆 Why Choose This Tarot Server?
+## 🏆 Why Choose This Tarot Server?
 
 | Feature | This Server | Basic Tarot APIs | Generic Card Readers |
 |---------|-------------|------------------|---------------------|
@@ -102,7 +118,7 @@ Each spread includes:
 
 1. **Clone and Install**
    ```bash
-   git clone <repository-url>
+   git clone https://git.moraxcheng.me/Morax/tarot-mcp.git
    cd tarot-mcp
    npm install
    ```
@@ -176,7 +192,7 @@ When running in HTTP mode, the following endpoints are available:
 - `POST /api/reading` - Perform a comprehensive tarot reading
   ```json
   {
-    "spreadType": "single_card|three_card|celtic_cross",
+    "spreadType": "single_card|three_card|celtic_cross|horseshoe|relationship_cross|career_path|decision_making|spiritual_guidance|year_ahead|chakra_alignment|shadow_work",
     "question": "Your specific question here",
     "sessionId": "optional-session-id-for-tracking"
   }
@@ -188,6 +204,10 @@ When running in HTTP mode, the following endpoints are available:
 - **Three Card Flow**: Past/Present/Future with energy progression analysis
 - **Elemental Balance**: Automatic analysis of Fire, Water, Air, Earth energies
 - **Context-Aware Interpretations**: Meanings selected based on question content
+- **Advanced Card Search**: Multi-criteria search with keyword, suit, element, and arcana filtering
+- **Similarity Analysis**: Find cards with related meanings and themes
+- **Database Analytics**: Comprehensive statistics and quality metrics
+- **Secure Randomization**: Cryptographically secure card drawing and shuffling
 
 ### MCP Protocol
 - `GET /sse` - Server-Sent Events endpoint for MCP clients
@@ -195,7 +215,7 @@ When running in HTTP mode, the following endpoints are available:
 
 ## 🛠️ MCP Tools
 
-The server provides the following professional MCP tools:
+The server provides **7 comprehensive MCP tools** for professional tarot reading and analysis:
 
 ### `get_card_info`
 Get comprehensive information about a specific tarot card including symbolism, astrology, and numerology.
@@ -220,7 +240,7 @@ List all available tarot cards with filtering and categorization.
 Perform a professional tarot reading with advanced interpretation analysis.
 ```json
 {
-  "spreadType": "celtic_cross|three_card|single_card",
+  "spreadType": "single_card|three_card|celtic_cross|horseshoe|relationship_cross|career_path|decision_making|spiritual_guidance|year_ahead|chakra_alignment|shadow_work",
   "question": "What should I know about my career path this year?",
   "sessionId": "optional-session-id"
 }
@@ -237,25 +257,63 @@ Perform a professional tarot reading with advanced interpretation analysis.
 - Spiritual development guidance (Spiritual Guidance)
 - Annual forecasting (Year Ahead)
 
-### `list_available_spreads`
-List all available tarot spread types with detailed descriptions and position meanings.
-
-### `interpret_card_combination`
-Get advanced interpretation for specific card combinations with archetypal analysis.
+### `search_cards`
+Search for tarot cards using various criteria like keywords, suit, element, etc.
 ```json
 {
-  "cards": [
-    {"name": "The Fool", "orientation": "upright"},
-    {"name": "The Magician", "orientation": "reversed"}
-  ],
-  "context": "Career guidance and decision making"
+  "keyword": "love",
+  "suit": "cups",
+  "arcana": "minor",
+  "element": "water",
+  "orientation": "upright",
+  "limit": 10
 }
 ```
 **Features**:
-- Multi-dimensional combination analysis
-- Archetypal pattern recognition
-- Elemental and numerical significance
-- Professional interpretation language
+- Keyword search across meanings, keywords, and symbolism
+- Filter by suit, arcana, element, number, and orientation
+- Flexible search criteria with customizable result limits
+
+### `find_similar_cards`
+Find cards with similar meanings to a given card.
+```json
+{
+  "cardName": "The Fool",
+  "limit": 5
+}
+```
+**Features**:
+- Semantic similarity analysis
+- Meaning-based card relationships
+- Customizable result limits
+
+### `get_database_analytics`
+Get comprehensive analytics and statistics about the tarot card database.
+```json
+{
+  "includeRecommendations": true
+}
+```
+**Features**:
+- Complete database statistics
+- Card distribution analysis
+- Quality metrics and recommendations
+- Database completeness assessment
+
+### `get_random_cards`
+Get random cards with optional filtering for practice and exploration.
+```json
+{
+  "count": 3,
+  "suit": "wands",
+  "arcana": "major",
+  "element": "fire"
+}
+```
+**Features**:
+- Cryptographically secure randomization
+- Optional filtering by suit, arcana, or element
+- Customizable card count
 
 ## 🔧 Configuration
 
@@ -408,6 +466,72 @@ curl "http://localhost:3000/api/cards?category=wands"
 curl "http://localhost:3000/api/spreads"
 ```
 
+### Advanced Search and Analytics
+
+#### Search Cards by Keyword
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "tools/call",
+    "params": {
+      "name": "search_cards",
+      "arguments": {
+        "keyword": "love",
+        "suit": "cups",
+        "limit": 5
+      }
+    }
+  }'
+```
+
+#### Find Similar Cards
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "tools/call",
+    "params": {
+      "name": "find_similar_cards",
+      "arguments": {
+        "cardName": "The Lovers",
+        "limit": 3
+      }
+    }
+  }'
+```
+
+#### Get Database Analytics
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "tools/call",
+    "params": {
+      "name": "get_database_analytics",
+      "arguments": {
+        "includeRecommendations": true
+      }
+    }
+  }'
+```
+
+#### Get Random Cards for Practice
+```bash
+curl -X POST http://localhost:3000/mcp \
+  -H "Content-Type: application/json" \
+  -d '{
+    "method": "tools/call",
+    "params": {
+      "name": "get_random_cards",
+      "arguments": {
+        "count": 3,
+        "arcana": "major"
+      }
+    }
+  }'
+```
+
 ## 🏗️ Architecture
 
 ### Professional Tarot Engine
@@ -526,11 +650,11 @@ MIT License - see LICENSE file for details.
 We welcome contributions to improve the Tarot MCP Server! Here's how you can help:
 
 ### 🎯 Priority Areas
-1. **Complete Card Database**: Add remaining 56 Minor Arcana cards with full interpretations
-2. **Additional Spreads**: Implement Relationship, Career, and Spiritual-focused spreads
-3. **Enhanced Analysis**: Advanced timing predictions and seasonal influences
-4. **Internationalization**: Support for multiple languages and cultural variations
-5. **Visual Integration**: Card imagery and visual representation support
+1. **Enhanced Interpretations**: Deeper psychological analysis and Jungian insights
+2. **Timing Predictions**: Advanced timing predictions and seasonal influences
+3. **Internationalization**: Support for multiple languages and cultural variations
+4. **Visual Integration**: Card imagery and visual representation support
+5. **Mobile Integration**: React Native or Flutter SDK development
 
 ### 📋 Contribution Process
 1. **Fork the repository** and create a feature branch
@@ -551,27 +675,27 @@ We welcome contributions to improve the Tarot MCP Server! Here's how you can hel
 - **Type Safety**: Maintain 100% TypeScript coverage with strict mode
 - **Documentation**: Include usage examples and API documentation
 
-## �️ Roadmap
+## 🗺️ Roadmap
 
 ### 📅 Version 2.0 (Planned)
-- **Complete 78-Card Deck**: All remaining Minor Arcana cards with full interpretations
-- **Advanced Spreads**: Relationship Cross, Career Path, Spiritual Journey spreads
+- **Enhanced Interpretations**: Deeper psychological analysis and Jungian insights
 - **Timing Predictions**: Seasonal influences and time-based guidance
 - **Enhanced AI**: Machine learning for pattern recognition in readings
+- **Visual Integration**: Card imagery and interactive visual representations
 
 ### 📅 Version 2.5 (Future)
-- **Visual Integration**: Card imagery and interactive visual representations
 - **Multi-Language Support**: Internationalization for global accessibility
 - **Cultural Variations**: Support for different tarot traditions and interpretations
 - **Advanced Analytics**: Reading history analysis and personal growth tracking
+- **Mobile SDK**: Native mobile application support
 
 ### 📅 Version 3.0 (Vision)
-- **Psychological Integration**: Jungian analysis and psychological tarot methods
+- **Psychological Integration**: Advanced Jungian analysis and psychological tarot methods
 - **Real-Time Collaboration**: Shared readings and collaborative interpretation
-- **Mobile SDK**: Native mobile application support
 - **AI-Enhanced Insights**: Advanced pattern recognition and personalized guidance
+- **Blockchain Integration**: Decentralized reading verification and authenticity
 
-## �🔮 About This Professional Tarot Implementation
+## 🔮 About This Professional Tarot Implementation
 
 ### Research-Based Accuracy
 This server implements the traditional Rider-Waite tarot deck with interpretations verified against multiple professional sources:
@@ -582,7 +706,7 @@ This server implements the traditional Rider-Waite tarot deck with interpretatio
 - **Professional Reader Methods**: Advanced combination interpretation techniques
 
 ### Comprehensive Card Database
-Each card includes extensive information:
+**✅ COMPLETE**: All 78 cards of the Rider-Waite deck are fully implemented with extensive information for each card:
 
 - **Multi-Context Meanings**: General, love, career, health, and spiritual interpretations
 - **Orientation Specific**: Detailed upright and reversed meanings beyond simple opposites
