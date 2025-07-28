@@ -370,6 +370,218 @@ export const TAROT_SPREADS: Record<string, TarotSpread> = {
         meaning: "The growth and healing that comes from shadow work"
       }
     ]
+  },
+
+  venus_love: {
+    name: "Venus Love Spread",
+    description: "A 7-card spread exploring love, relationships, self-worth, and romantic potential through the energy of Venus",
+    cardCount: 7,
+    positions: [
+      {
+        name: "Your Current Relationship Energy",
+        meaning: "Your present state in love and relationships"
+      },
+      {
+        name: "Self-Love and Self-Worth",
+        meaning: "How you value and care for yourself"
+      },
+      {
+        name: "What Attracts Love to You",
+        meaning: "Your magnetic qualities and what draws love into your life"
+      },
+      {
+        name: "Blocks to Receiving Love",
+        meaning: "What prevents you from fully receiving and accepting love"
+      },
+      {
+        name: "How to Enhance Relationships",
+        meaning: "Actions to improve your current or future relationships"
+      },
+      {
+        name: "Hidden Desires of the Heart",
+        meaning: "Your deepest romantic and emotional needs"
+      },
+      {
+        name: "Future Potential in Love",
+        meaning: "What the future holds for your romantic life"
+      }
+    ]
+  },
+
+  tree_of_life: {
+    name: "Tree of Life Spread",
+    description: "A 10-card spread based on the Kabbalistic Tree of Life, providing deep spiritual insights and life guidance",
+    cardCount: 10,
+    positions: [
+      {
+        name: "Kether (Crown)",
+        meaning: "Divine will, highest purpose, and spiritual connection"
+      },
+      {
+        name: "Chokmah (Wisdom)",
+        meaning: "Creative force, inspiration, and dynamic energy"
+      },
+      {
+        name: "Binah (Understanding)",
+        meaning: "Form, structure, and receptive wisdom"
+      },
+      {
+        name: "Chesed (Mercy)",
+        meaning: "Love, compassion, and expansion"
+      },
+      {
+        name: "Geburah (Severity)",
+        meaning: "Strength, discipline, and necessary boundaries"
+      },
+      {
+        name: "Tiphareth (Beauty)",
+        meaning: "Balance, harmony, and integration of opposites"
+      },
+      {
+        name: "Netzach (Victory)",
+        meaning: "Emotions, desires, and artistic expression"
+      },
+      {
+        name: "Hod (Splendor)",
+        meaning: "Intellect, communication, and analytical thinking"
+      },
+      {
+        name: "Yesod (Foundation)",
+        meaning: "Subconscious, dreams, and psychic impressions"
+      },
+      {
+        name: "Malkuth (Kingdom)",
+        meaning: "Physical manifestation and material world results"
+      }
+    ]
+  },
+
+  astrological_houses: {
+    name: "Astrological Houses Spread",
+    description: "A 12-card spread representing the twelve astrological houses, providing comprehensive life insights",
+    cardCount: 12,
+    positions: [
+      {
+        name: "1st House - Self and Identity",
+        meaning: "Your personality, appearance, and how others see you"
+      },
+      {
+        name: "2nd House - Values and Resources",
+        meaning: "Money, possessions, self-worth, and personal values"
+      },
+      {
+        name: "3rd House - Communication",
+        meaning: "Communication, learning, siblings, and short journeys"
+      },
+      {
+        name: "4th House - Home and Family",
+        meaning: "Home, family, roots, and emotional foundation"
+      },
+      {
+        name: "5th House - Creativity and Romance",
+        meaning: "Creativity, children, romance, and self-expression"
+      },
+      {
+        name: "6th House - Work and Health",
+        meaning: "Daily work, health, service, and routine"
+      },
+      {
+        name: "7th House - Partnerships",
+        meaning: "Marriage, business partnerships, and open enemies"
+      },
+      {
+        name: "8th House - Transformation",
+        meaning: "Shared resources, transformation, and hidden matters"
+      },
+      {
+        name: "9th House - Philosophy",
+        meaning: "Higher learning, philosophy, travel, and spirituality"
+      },
+      {
+        name: "10th House - Career and Reputation",
+        meaning: "Career, reputation, public image, and life direction"
+      },
+      {
+        name: "11th House - Friends and Aspirations",
+        meaning: "Friends, groups, hopes, and future aspirations"
+      },
+      {
+        name: "12th House - Spirituality and Hidden",
+        meaning: "Spirituality, hidden enemies, and subconscious patterns"
+      }
+    ]
+  },
+
+  mandala: {
+    name: "Mandala Spread",
+    description: "A 9-card circular spread representing wholeness and the journey to self-discovery",
+    cardCount: 9,
+    positions: [
+      {
+        name: "Center - Core Self",
+        meaning: "Your essential nature and current spiritual center"
+      },
+      {
+        name: "North - Spiritual Guidance",
+        meaning: "Divine guidance and higher wisdom available to you"
+      },
+      {
+        name: "Northeast - Mental Clarity",
+        meaning: "Thoughts, ideas, and mental processes that need attention"
+      },
+      {
+        name: "East - New Beginnings",
+        meaning: "Fresh starts and opportunities on the horizon"
+      },
+      {
+        name: "Southeast - Relationships",
+        meaning: "Your connections with others and social dynamics"
+      },
+      {
+        name: "South - Passion and Creativity",
+        meaning: "Your creative fire and what energizes you"
+      },
+      {
+        name: "Southwest - Healing and Release",
+        meaning: "What needs to be healed or released from your life"
+      },
+      {
+        name: "West - Intuition and Emotions",
+        meaning: "Your emotional landscape and intuitive insights"
+      },
+      {
+        name: "Northwest - Wisdom and Knowledge",
+        meaning: "Lessons learned and wisdom gained from experience"
+      }
+    ]
+  },
+
+  pentagram: {
+    name: "Pentagram Spread",
+    description: "A 5-card spread based on the five elements, exploring balance and spiritual harmony",
+    cardCount: 5,
+    positions: [
+      {
+        name: "Spirit (Top)",
+        meaning: "Divine guidance and your highest spiritual purpose"
+      },
+      {
+        name: "Air (Upper Right)",
+        meaning: "Thoughts, communication, and intellectual matters"
+      },
+      {
+        name: "Fire (Lower Right)",
+        meaning: "Passion, action, and creative energy"
+      },
+      {
+        name: "Earth (Lower Left)",
+        meaning: "Material world, stability, and practical concerns"
+      },
+      {
+        name: "Water (Upper Left)",
+        meaning: "Emotions, intuition, and subconscious influences"
+      }
+    ]
   }
 };
 

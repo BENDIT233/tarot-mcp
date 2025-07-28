@@ -149,6 +149,16 @@ export class TarotReadingManager {
       interpretation += this.generateChakraAnalysis(drawnCards);
     } else if (spreadName.toLowerCase().includes("year ahead")) {
       interpretation += this.generateYearAheadAnalysis(drawnCards);
+    } else if (spreadName.toLowerCase().includes("venus") || spreadName.toLowerCase().includes("love")) {
+      interpretation += this.generateVenusLoveAnalysis(drawnCards);
+    } else if (spreadName.toLowerCase().includes("tree of life")) {
+      interpretation += this.generateTreeOfLifeAnalysis(drawnCards);
+    } else if (spreadName.toLowerCase().includes("astrological")) {
+      interpretation += this.generateAstrologicalAnalysis(drawnCards);
+    } else if (spreadName.toLowerCase().includes("mandala")) {
+      interpretation += this.generateMandalaAnalysis(drawnCards);
+    } else if (spreadName.toLowerCase().includes("pentagram")) {
+      interpretation += this.generatePentagramAnalysis(drawnCards);
     }
 
     // Overall interpretation
@@ -426,6 +436,239 @@ export class TarotReadingManager {
         analysis += "A time for patience and inner work. ";
       }
     });
+
+    analysis += "\n";
+    return analysis;
+  }
+
+  /**
+   * Generate Venus Love spread analysis
+   */
+  private generateVenusLoveAnalysis(drawnCards: DrawnCard[]): string {
+    if (drawnCards.length !== 7) return "";
+
+    let analysis = "**Venus Love Energy Analysis:**\n\n";
+
+    const [currentEnergy, selfLove, attraction, blocks, enhancement, desires, future] = drawnCards;
+
+    // Analyze love energy flow
+    analysis += `**Love Energy Flow:** Your current relationship energy (${currentEnergy.card.name}) `;
+    if (currentEnergy.orientation === "upright") {
+      analysis += "shows positive romantic vibrations and openness to love. ";
+    } else {
+      analysis += "suggests some healing or inner work is needed before fully opening to love. ";
+    }
+
+    // Self-love foundation
+    analysis += `Your self-love foundation (${selfLove.card.name}) `;
+    if (selfLove.orientation === "upright") {
+      analysis += "indicates healthy self-worth that attracts genuine love. ";
+    } else {
+      analysis += "reveals areas where self-compassion and self-acceptance need attention. ";
+    }
+
+    // Attraction and blocks
+    analysis += `What attracts love to you (${attraction.card.name}) works in harmony with `;
+    analysis += `overcoming blocks (${blocks.card.name}) to create a path forward. `;
+
+    // Future potential
+    analysis += `The future potential (${future.card.name}) `;
+    if (future.orientation === "upright") {
+      analysis += "promises beautiful developments in your love life. ";
+    } else {
+      analysis += "suggests patience and continued inner work will lead to love. ";
+    }
+
+    analysis += "\n";
+    return analysis;
+  }
+
+  /**
+   * Generate Tree of Life spread analysis
+   */
+  private generateTreeOfLifeAnalysis(drawnCards: DrawnCard[]): string {
+    if (drawnCards.length !== 10) return "";
+
+    let analysis = "**Tree of Life Spiritual Analysis:**\n\n";
+
+    const [kether, chokmah, binah, chesed, geburah, tiphareth, netzach, hod, yesod, malkuth] = drawnCards;
+
+    // Analyze the three pillars
+    const leftPillar = [binah, geburah, hod]; // Severity
+    const rightPillar = [chokmah, chesed, netzach]; // Mercy
+    const middlePillar = [kether, tiphareth, yesod, malkuth]; // Balance
+
+    // Pillar analysis
+    const leftUprightCount = leftPillar.filter(c => c.orientation === "upright").length;
+    const rightUprightCount = rightPillar.filter(c => c.orientation === "upright").length;
+    const middleUprightCount = middlePillar.filter(c => c.orientation === "upright").length;
+
+    analysis += `**Pillar Balance:** `;
+    if (rightUprightCount > leftUprightCount) {
+      analysis += "The Pillar of Mercy dominates, indicating expansion, growth, and positive energy. ";
+    } else if (leftUprightCount > rightUprightCount) {
+      analysis += "The Pillar of Severity is prominent, suggesting discipline, boundaries, and necessary restrictions. ";
+    } else {
+      analysis += "The pillars are balanced, showing harmony between expansion and contraction. ";
+    }
+
+    // Crown to Kingdom flow
+    analysis += `**Divine Flow:** From Kether (${kether.card.name}) to Malkuth (${malkuth.card.name}), `;
+    if (kether.orientation === malkuth.orientation) {
+      analysis += "there's alignment between your highest purpose and material manifestation. ";
+    } else {
+      analysis += "there's a need to bridge the gap between spiritual ideals and earthly reality. ";
+    }
+
+    analysis += "\n";
+    return analysis;
+  }
+
+  /**
+   * Generate Astrological Houses spread analysis
+   */
+  private generateAstrologicalAnalysis(drawnCards: DrawnCard[]): string {
+    if (drawnCards.length !== 12) return "";
+
+    let analysis = "**Astrological Houses Analysis:**\n\n";
+
+    // Group houses by element
+    const fireHouses = [drawnCards[0], drawnCards[4], drawnCards[8]]; // 1st, 5th, 9th
+    const earthHouses = [drawnCards[1], drawnCards[5], drawnCards[9]]; // 2nd, 6th, 10th
+    const airHouses = [drawnCards[2], drawnCards[6], drawnCards[10]]; // 3rd, 7th, 11th
+    const waterHouses = [drawnCards[3], drawnCards[7], drawnCards[11]]; // 4th, 8th, 12th
+
+    // Analyze elemental balance
+    const fireUpright = fireHouses.filter(c => c.orientation === "upright").length;
+    const earthUpright = earthHouses.filter(c => c.orientation === "upright").length;
+    const airUpright = airHouses.filter(c => c.orientation === "upright").length;
+    const waterUpright = waterHouses.filter(c => c.orientation === "upright").length;
+
+    analysis += `**Elemental Balance:** `;
+    const elements = [
+      { name: "Fire (Identity/Creativity/Philosophy)", count: fireUpright },
+      { name: "Earth (Resources/Work/Career)", count: earthUpright },
+      { name: "Air (Communication/Partnerships/Community)", count: airUpright },
+      { name: "Water (Home/Transformation/Spirituality)", count: waterUpright }
+    ];
+
+    const strongestElement = elements.reduce((max, current) =>
+      current.count > max.count ? current : max
+    );
+
+    analysis += `${strongestElement.name} energy is strongest in your chart, `;
+    analysis += `indicating focus in these life areas. `;
+
+    // Angular houses analysis (1st, 4th, 7th, 10th)
+    const angularHouses = [drawnCards[0], drawnCards[3], drawnCards[6], drawnCards[9]];
+    const angularUpright = angularHouses.filter(c => c.orientation === "upright").length;
+
+    analysis += `**Life Direction:** With ${angularUpright} out of 4 angular houses upright, `;
+    if (angularUpright >= 3) {
+      analysis += "you have strong momentum and clear direction in major life areas. ";
+    } else if (angularUpright >= 2) {
+      analysis += "you have moderate stability with some areas needing attention. ";
+    } else {
+      analysis += "focus on building stronger foundations in key life areas. ";
+    }
+
+    analysis += "\n";
+    return analysis;
+  }
+
+  /**
+   * Generate Mandala spread analysis
+   */
+  private generateMandalaAnalysis(drawnCards: DrawnCard[]): string {
+    if (drawnCards.length !== 9) return "";
+
+    let analysis = "**Mandala Wholeness Analysis:**\n\n";
+
+    const [center, north, northeast, east, southeast, south, southwest, west, northwest] = drawnCards;
+
+    // Analyze center in relation to outer cards
+    analysis += `**Core Integration:** Your center (${center.card.name}) `;
+    if (center.orientation === "upright") {
+      analysis += "shows a strong, balanced core that can integrate the surrounding energies. ";
+    } else {
+      analysis += "suggests the need for inner healing before achieving wholeness. ";
+    }
+
+    // Analyze directional balance
+    const directions = [north, northeast, east, southeast, south, southwest, west, northwest];
+    const uprightDirections = directions.filter(c => c.orientation === "upright").length;
+
+    analysis += `**Directional Balance:** With ${uprightDirections} out of 8 directions upright, `;
+    if (uprightDirections >= 6) {
+      analysis += "your life energies are well-balanced and flowing harmoniously. ";
+    } else if (uprightDirections >= 4) {
+      analysis += "you have good balance with some areas needing attention. ";
+    } else {
+      analysis += "focus on healing and balancing multiple life areas. ";
+    }
+
+    // Opposite directions analysis
+    const opposites = [
+      [north, south], [east, west], [northeast, southwest], [southeast, northwest]
+    ];
+
+    let balancedPairs = 0;
+    opposites.forEach(([dir1, dir2]) => {
+      if (dir1.orientation === dir2.orientation) {
+        balancedPairs++;
+      }
+    });
+
+    analysis += `**Polarity Integration:** ${balancedPairs} out of 4 opposite pairs are balanced, `;
+    if (balancedPairs >= 3) {
+      analysis += "showing excellent integration of opposing forces. ";
+    } else {
+      analysis += "indicating opportunities to harmonize conflicting energies. ";
+    }
+
+    analysis += "\n";
+    return analysis;
+  }
+
+  /**
+   * Generate Pentagram spread analysis
+   */
+  private generatePentagramAnalysis(drawnCards: DrawnCard[]): string {
+    if (drawnCards.length !== 5) return "";
+
+    let analysis = "**Pentagram Elemental Analysis:**\n\n";
+
+    const [spirit, air, fire, earth, water] = drawnCards;
+
+    // Analyze elemental balance
+    const elements = [air, fire, earth, water];
+    const uprightElements = elements.filter(c => c.orientation === "upright").length;
+
+    analysis += `**Elemental Harmony:** With ${uprightElements} out of 4 elements upright, `;
+    if (uprightElements === 4) {
+      analysis += "all elements are in perfect harmony, creating powerful manifestation energy. ";
+    } else if (uprightElements >= 3) {
+      analysis += "strong elemental balance with minor adjustments needed. ";
+    } else if (uprightElements >= 2) {
+      analysis += "moderate balance requiring attention to weaker elements. ";
+    } else {
+      analysis += "significant elemental imbalance requiring healing and rebalancing. ";
+    }
+
+    // Spirit connection analysis
+    analysis += `**Divine Connection:** Spirit (${spirit.card.name}) `;
+    if (spirit.orientation === "upright") {
+      analysis += "shows strong divine connection guiding your elemental balance. ";
+    } else {
+      analysis += "suggests the need to strengthen your spiritual foundation. ";
+    }
+
+    // Element-specific insights
+    analysis += `**Elemental Flow:** `;
+    if (air.orientation === "upright") analysis += "Clear thinking and communication support your goals. ";
+    if (fire.orientation === "upright") analysis += "Passionate energy drives your actions. ";
+    if (earth.orientation === "upright") analysis += "Practical foundations support manifestation. ";
+    if (water.orientation === "upright") analysis += "Emotional wisdom guides your intuition. ";
 
     analysis += "\n";
     return analysis;
