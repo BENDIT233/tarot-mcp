@@ -2,6 +2,18 @@
 
 A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot card readings, built with Node.js and TypeScript. This server provides comprehensive tarot functionality through both MCP protocol and HTTP API endpoints, featuring research-based interpretations and advanced reading analysis.
 
+## 服务配置
+
+```json
+{
+  "command": "npx",
+  "args": ["tarot-mcp-server@latest"],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
+```
+
 ## 🚀 Current Implementation Status
 
 **✅ FULLY IMPLEMENTED AND WORKING:**
@@ -381,33 +393,6 @@ Options:
 
 - `NODE_ENV` - Environment (development/production)
 - `PORT` - Server port (default: 3000)
-
-## 📦 Server Config
-
-For ModelScope MCP deployment and other MCP clients:
-
-```json
-{
-  "command": "npx",
-  "args": ["tarot-mcp-server@latest"],
-  "env": {
-    "NODE_ENV": "production"
-  }
-}
-```
-
-Alternative configurations:
-
-```json
-{
-  "command": "npx",
-  "args": ["tarot-mcp-server@latest", "--transport", "http", "--port", "3000"],
-  "env": {
-    "NODE_ENV": "production",
-    "PORT": "3000"
-  }
-}
-```
 
 ## 🎯 MCP Client Integration
 
