@@ -76,8 +76,56 @@ export class TarotReadingManager {
     });
 
     result += "Use the `perform_reading` tool with one of these spread types to get a reading.";
-    
+
     return result;
+  }
+
+  /**
+   * Perform a custom tarot reading with user-defined spread
+   */
+  public performCustomReading(
+    spreadName: string,
+    description: string,
+    positions: { name: string; meaning: string }[],
+    question: string,
+    sessionId?: string
+  ): string {
+    // Create a custom spread object
+    const customSpread = {
+      name: spreadName,
+      description: description,
+      positions: positions,
+      cardCount: positions.length
+    };
+
+    // Use cryptographically secure random card drawing
+    const cards = this.cardManager.getRandomCards(customSpread.cardCount);
+
+    // Generate random orientations for each card using secure randomness
+    const drawnCards: DrawnCard[] = cards.map((card: any, index: number) => ({
+      card,
+      orientation: this.getSecureRandomOrientation(), // Cryptographically secure orientation
+      position: customSpread.positions[index].name,
+      positionMeaning: customSpread.positions[index].meaning
+    }));
+
+    // Create the reading
+    const reading: TarotReading = {
+      id: this.generateReadingId(),
+      spreadType: `custom_${spreadName.toLowerCase().replace(/\s+/g, '_')}`,
+      question,
+      cards: drawnCards,
+      interpretation: this.generateInterpretation(drawnCards, question, customSpread.name),
+      timestamp: new Date(),
+      sessionId
+    };
+
+    // Add to session if provided
+    if (sessionId) {
+      this.sessionManager.addReadingToSession(sessionId, reading);
+    }
+
+    return this.formatReading(reading, customSpread.name, customSpread.description);
   }
 
   /**

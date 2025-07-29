@@ -7,6 +7,7 @@ A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot c
 **✅ FULLY IMPLEMENTED AND WORKING:**
 - Complete 78-card Rider-Waite deck with detailed interpretations
 - 11 professional tarot spreads (Single Card, Three Card, Celtic Cross, Horseshoe, Relationship Cross, Career Path, Decision Making, Spiritual Guidance, Year Ahead, Chakra Alignment, Shadow Work)
+- **Custom Spread Creation**: AI can create custom tarot spreads when existing ones don't fit
 - Multi-transport MCP server (stdio, HTTP, SSE)
 - Advanced interpretation engine with elemental analysis
 - Cryptographically secure card shuffling and drawing
@@ -24,6 +25,7 @@ A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot c
 - **Research-Based Accuracy**: Interpretations verified against professional tarot sources (Biddy Tarot, Labyrinthos, classical literature)
 - **Complete Rider-Waite Deck**: Comprehensive card database with detailed meanings, symbolism, astrology, and numerology
 - **11 Professional Spreads**: Celtic Cross, Relationship Cross, Career Path, Spiritual Guidance, Chakra Alignment, Year Ahead, and more
+- **Custom Spread Creation**: AI can create unlimited custom spreads (1-15 positions) when existing spreads don't fit the specific question or context
 - **Specialized Reading Analysis**: Tailored interpretations for relationships, career, spiritual growth, and energy balancing
 - **Intelligent Card Combinations**: Multi-dimensional analysis including elemental balance, suit patterns, and numerical progressions
 
@@ -197,6 +199,21 @@ When running in HTTP mode, the following endpoints are available:
     "sessionId": "optional-session-id-for-tracking"
   }
   ```
+- `POST /api/custom-spread` - Create and perform a custom tarot spread
+  ```json
+  {
+    "spreadName": "Your Custom Spread Name",
+    "description": "What this spread explores",
+    "positions": [
+      {
+        "name": "Position Name",
+        "meaning": "What this position represents"
+      }
+    ],
+    "question": "Your specific question",
+    "sessionId": "optional-session-id"
+  }
+  ```
 - `GET /api/spreads` - List all available spread types with descriptions
 
 ### Advanced Features
@@ -215,7 +232,7 @@ When running in HTTP mode, the following endpoints are available:
 
 ## 🛠️ MCP Tools
 
-The server provides **7 comprehensive MCP tools** for professional tarot reading and analysis:
+The server provides **8 comprehensive MCP tools** for professional tarot reading and analysis:
 
 ### `get_card_info`
 Get comprehensive information about a specific tarot card including symbolism, astrology, and numerology.
@@ -314,6 +331,38 @@ Get random cards with optional filtering for practice and exploration.
 - Cryptographically secure randomization
 - Optional filtering by suit, arcana, or element
 - Customizable card count
+
+### `create_custom_spread`
+Create a custom tarot spread and draw cards for it. Perfect for AI when no existing spread fits the specific needs.
+```json
+{
+  "spreadName": "AI Decision Making Spread",
+  "description": "A custom spread designed to help AI make decisions when no existing spread fits the situation",
+  "positions": [
+    {
+      "name": "Current Situation",
+      "meaning": "The present state of affairs that needs to be addressed"
+    },
+    {
+      "name": "Hidden Influences",
+      "meaning": "Unseen factors affecting the situation"
+    },
+    {
+      "name": "Guidance",
+      "meaning": "Wisdom and advice for making the best decision"
+    }
+  ],
+  "question": "What is the best approach for this unique situation?",
+  "sessionId": "optional-session-id"
+}
+```
+**Features**:
+- Create custom spreads with 1-15 positions
+- Define custom position names and meanings
+- Automatic card drawing with cryptographically secure randomization
+- Full interpretation with position-specific analysis
+- Session management support
+- Perfect for AI when existing spreads don't fit the specific question or context
 
 ## 🔧 Configuration
 
@@ -447,6 +496,40 @@ curl -X POST http://localhost:3000/api/reading \
   }'
 ```
 **Features**: 7-card chakra analysis, energy balance assessment, spiritual healing guidance
+
+#### Custom Spread Creation
+```bash
+curl -X POST http://localhost:3000/api/custom-spread \
+  -H "Content-Type: application/json" \
+  -d '{
+    "spreadName": "AI Decision Making Spread",
+    "description": "A custom spread designed to help AI make decisions when no existing spread fits the situation",
+    "positions": [
+      {
+        "name": "Current Situation",
+        "meaning": "The present state of affairs that needs to be addressed"
+      },
+      {
+        "name": "Hidden Influences",
+        "meaning": "Unseen factors affecting the situation"
+      },
+      {
+        "name": "Option A",
+        "meaning": "One potential direction or choice"
+      },
+      {
+        "name": "Option B",
+        "meaning": "An alternative direction or choice"
+      },
+      {
+        "name": "Guidance",
+        "meaning": "Wisdom and advice for making the best decision"
+      }
+    ],
+    "question": "What is the best approach for creating a new tarot spread when existing ones don'\''t fit?"
+  }'
+```
+**Features**: Unlimited custom spread creation (1-15 positions), AI-driven card drawing, position-specific interpretations
 
 ### Card Information Queries
 

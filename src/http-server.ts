@@ -109,6 +109,23 @@ export class TarotHttpServer {
         res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
       }
     });
+
+    // Custom spread creation endpoint
+    this.app.post('/api/custom-spread', async (req, res) => {
+      try {
+        const { spreadName, description, positions, question, sessionId } = req.body;
+        const result = await this.tarotServer.executeTool('create_custom_spread', {
+          spreadName,
+          description,
+          positions,
+          question,
+          sessionId
+        });
+        res.json({ result });
+      } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+      }
+    });
   }
 
   /**

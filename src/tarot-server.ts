@@ -198,6 +198,52 @@ export class TarotServer {
           },
         },
       },
+      {
+        name: "create_custom_spread",
+        description: "Create a custom tarot spread and draw cards for it. Use this when no existing spread fits your needs and you want to create your own layout with specific positions and meanings.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            spreadName: {
+              type: "string",
+              description: "Name for your custom spread",
+            },
+            description: {
+              type: "string",
+              description: "Description of what this spread is designed to explore",
+            },
+            positions: {
+              type: "array",
+              description: "Array of position objects defining each card position in the spread",
+              items: {
+                type: "object",
+                properties: {
+                  name: {
+                    type: "string",
+                    description: "Name of this position (e.g., 'Past Influences', 'Current Challenge')",
+                  },
+                  meaning: {
+                    type: "string",
+                    description: "What this position represents in the reading",
+                  },
+                },
+                required: ["name", "meaning"],
+              },
+              minItems: 1,
+              maxItems: 15,
+            },
+            question: {
+              type: "string",
+              description: "The question or focus for this reading",
+            },
+            sessionId: {
+              type: "string",
+              description: "Optional session ID to continue a previous reading",
+            },
+          },
+          required: ["spreadName", "description", "positions", "question"],
+        },
+      },
     ];
   }
 
@@ -230,6 +276,9 @@ export class TarotServer {
 
       case "get_random_cards":
         return this.handleGetRandomCards(args);
+
+      case "create_custom_spread":
+        return this.handleCreateCustomSpread(args);
 
       default:
         throw new Error(`Unknown tool: ${toolName}`);
@@ -395,5 +444,59 @@ export class TarotServer {
     }
 
     return response;
+  }
+
+  /**
+   * Handle custom spread creation and reading
+   */
+  private handleCreateCustomSpread(args: Record<string, any>): string {
+    const { spreadName, description, positions, question, sessionId } = args;
+
+    // Validate input
+    if (!spreadName || typeof spreadName !== 'string') {
+      return "Error: spreadName is required and must be a string.";
+    }
+
+    if (!description || typeof description !== 'string') {
+      return "Error: description is required and must be a string.";
+    }
+
+    if (!Array.isArray(positions) || positions.length === 0) {
+      return "Error: positions must be a non-empty array.";
+    }
+
+    if (positions.length > 15) {
+      return "Error: Maximum 15 positions allowed for a custom spread.";
+    }
+
+    if (!question || typeof question !== 'string') {
+      return "Error: question is required and must be a string.";
+    }
+
+    // Validate each position
+    for (let i = 0; i < positions.length; i++) {
+      const position = positions[i];
+      if (!position || typeof position !== 'object') {
+        return `Error: Position ${i + 1} must be an object with 'name' and 'meaning' properties.`;
+      }
+      if (!position.name || typeof position.name !== 'string') {
+        return `Error: Position ${i + 1} must have a 'name' property that is a string.`;
+      }
+      if (!position.meaning || typeof position.meaning !== 'string') {
+        return `Error: Position ${i + 1} must have a 'meaning' property that is a string.`;
+      }
+    }
+
+    try {
+      return this.readingManager.performCustomReading(
+        spreadName,
+        description,
+        positions,
+        question,
+        sessionId
+      );
+    } catch (error) {
+      return `Error creating custom spread: ${error instanceof Error ? error.message : String(error)}`;
+    }
   }
 }
