@@ -382,11 +382,51 @@ Options:
 - `NODE_ENV` - Environment (development/production)
 - `PORT` - Server port (default: 3000)
 
+## 📦 Server Config
+
+For ModelScope MCP deployment and other MCP clients:
+
+```json
+{
+  "command": "npx",
+  "args": ["tarot-mcp-server@latest"],
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
+```
+
+Alternative configurations:
+
+```json
+{
+  "command": "npx",
+  "args": ["tarot-mcp-server@latest", "--transport", "http", "--port", "3000"],
+  "env": {
+    "NODE_ENV": "production",
+    "PORT": "3000"
+  }
+}
+```
+
 ## 🎯 MCP Client Integration
 
 ### Cursor IDE
 
 Add to your Cursor `mcp.json`:
+
+```json
+{
+  "mcpServers": {
+    "tarot": {
+      "command": "npx",
+      "args": ["tarot-mcp-server@latest"]
+    }
+  }
+}
+```
+
+Or for local development:
 
 ```json
 {

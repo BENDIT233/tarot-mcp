@@ -54,5 +54,18 @@
   },
   "engines": {
     "node": ">=18.0.0"
-  }
+  },
+  "files": [
+    "dist/**/*",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://git.moraxcheng.me/Morax/tarot-mcp.git"
+  },
+  "bugs": {
+    "url": "https://git.moraxcheng.me/Morax/tarot-mcp/issues"
+  },
+  "homepage": "https://git.moraxcheng.me/Morax/tarot-mcp#readme"
 }
