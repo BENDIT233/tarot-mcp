@@ -2,7 +2,7 @@
 
 A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot card readings, built with Node.js and TypeScript. This server provides comprehensive tarot functionality through both MCP protocol and HTTP API endpoints, featuring research-based interpretations and advanced reading analysis.
 
-## 服务配置
+## Server config
 
 ```json
 {
