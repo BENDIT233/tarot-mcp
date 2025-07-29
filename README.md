@@ -7,7 +7,7 @@ A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot c
 ```json
 {
   "command": "npx",
-  "args": ["tarot-mcp-server"],
+  "args": ["tarot-mcp-server@latest"],
   "env": {
     "NODE_ENV": "production"
   }

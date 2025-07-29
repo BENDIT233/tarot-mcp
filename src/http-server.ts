@@ -89,14 +89,60 @@ export class TarotHttpServer {
    * Setup HTTP routes
    */
   private setupRoutes(): void {
+    // Health check endpoint
     this.app.get('/health', (req, res) => {
-      res.json({ status: 'ok' });
+      res.json({
+        status: 'ok',
+        timestamp: new Date().toISOString(),
+        endpoints: {
+          sse: '/sse',
+          mcp: '/mcp',
+          health: '/health',
+          api: {
+            reading: '/api/reading',
+            customSpread: '/api/custom-spread',
+            info: '/api/info'
+          }
+        }
+      });
     });
 
-    // SSE endpoint
+    // API info endpoint
+    this.app.get('/api/info', (req, res) => {
+      res.json({
+        name: 'Tarot MCP Server',
+        version: '1.0.0',
+        capabilities: ['tools'],
+        tools: this.tarotServer.getAvailableTools(),
+        endpoints: {
+          sse: '/sse',
+          mcp: '/mcp',
+          health: '/health'
+        }
+      });
+    });
+
+    // SSE endpoint for MCP
     this.app.get('/sse', async (req, res) => {
-      const transport = new SSEServerTransport('/sse', res);
-      await this.server.connect(transport);
+      try {
+        console.log('SSE connection request received');
+        const transport = new SSEServerTransport('/sse', res);
+        await this.server.connect(transport);
+        console.log('SSE connection established');
+      } catch (error) {
+        console.error('SSE connection error:', error);
+        res.status(500).json({ error: 'Failed to establish SSE connection' });
+      }
+    });
+
+    // MCP HTTP endpoint (alternative to SSE)
+    this.app.post('/mcp', async (req, res) => {
+      try {
+        // This would need proper MCP HTTP transport implementation
+        res.json({ message: 'MCP HTTP endpoint - not yet implemented' });
+      } catch (error) {
+        res.status(500).json({ error: error instanceof Error ? error.message : String(error) });
+      }
     });
 
     // Example of a direct API endpoint
@@ -133,9 +179,12 @@ export class TarotHttpServer {
    */
   public async start(): Promise<void> {
     return new Promise((resolve) => {
-      this.app.listen(this.port, () => {
-        console.log(`Tarot MCP Server running on http://localhost:${this.port}`);
-        console.log(`SSE endpoint available at http://localhost:${this.port}/sse`);
+      this.app.listen(this.port, '0.0.0.0', () => {
+        console.log(`🔮 Tarot MCP Server running on http://0.0.0.0:${this.port}`);
+        console.log(`📡 SSE endpoint: http://0.0.0.0:${this.port}/sse`);
+        console.log(`🔧 MCP endpoint: http://0.0.0.0:${this.port}/mcp`);
+        console.log(`❤️  Health check: http://0.0.0.0:${this.port}/health`);
+        console.log(`📋 API info: http://0.0.0.0:${this.port}/api/info`);
         resolve();
       });
     });
