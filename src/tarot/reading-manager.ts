@@ -2,6 +2,7 @@ import { TarotCardManager } from "./card-manager.js";
 import { TarotSessionManager } from "./session-manager.js";
 import { TarotReading, DrawnCard, CardOrientation, TarotCard } from "./types.js";
 import { TAROT_SPREADS, getAllSpreads, getSpread, isValidSpreadType } from "./spreads.js";
+import { getSecureRandom } from "./utils.js";
 
 /**
  * Manages tarot readings and interpretations
@@ -1115,41 +1116,17 @@ export class TarotReadingManager {
    */
   private getSecureRandomOrientation(): CardOrientation {
     // Use the same secure random method as card manager
-    const random = this.getSecureRandom();
+    const random = getSecureRandom();
     return random < 0.5 ? "upright" : "reversed"; // 50% chance upright, 50% reversed
   }
 
-  /**
-   * Generate cryptographically secure random number
-   */
-  private getSecureRandom(): number {
-    if (typeof crypto !== 'undefined' && crypto.getRandomValues) {
-      // Browser environment with Web Crypto API
-      const array = new Uint32Array(1);
-      crypto.getRandomValues(array);
-      return array[0] / (0xffffffff + 1);
-    } else if (typeof require !== 'undefined') {
-      // Node.js environment
-      try {
-        const crypto = require('crypto');
-        return crypto.randomBytes(4).readUInt32BE(0) / (0xffffffff + 1);
-      } catch (e) {
-        // Fallback to Math.random if crypto is not available
-        console.warn('Crypto module not available, falling back to Math.random()');
-        return Math.random();
-      }
-    } else {
-      // Fallback to Math.random
-      return Math.random();
-    }
-  }
 
   /**
    * Generate a unique reading ID with secure randomness
    */
   private generateReadingId(): string {
     const timestamp = Date.now();
-    const randomPart = Math.floor(this.getSecureRandom() * 1000000000).toString(36);
+    const randomPart = Math.floor(getSecureRandom() * 1000000000).toString(36);
     return `reading_${timestamp}_${randomPart}`;
   }
 }

@@ -2,9 +2,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { TarotCard, CardOrientation, CardCategory } from './types.js';
-
-// Use global crypto in Node.js >= 18 and browsers
-declare const crypto: any;
+import { getSecureRandom } from './utils.js';
 
 // Helper to get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -206,19 +204,6 @@ export class TarotCardManager {
     return undefined;
   }
 
-  /**
-   * Generate a cryptographically secure random number between 0 and 1.
-   */
-  private getSecureRandom(): number {
-    if (typeof crypto !== 'undefined' && typeof crypto.getRandomValues === 'function') {
-      const array = new Uint32Array(1);
-      crypto.getRandomValues(array);
-      return array[0] / (0xffffffff + 1);
-    }
-    // Fallback for older Node.js or unexpected environments
-    console.warn('crypto.getRandomValues not available, falling back to Math.random().');
-    return Math.random();
-  }
 
   /**
    * Fisher-Yates shuffle algorithm for true randomness.
@@ -226,7 +211,7 @@ export class TarotCardManager {
   private fisherYatesShuffle<T>(array: readonly T[]): T[] {
     const shuffled = [...array];
     for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(this.getSecureRandom() * (i + 1));
+      const j = Math.floor(getSecureRandom() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
@@ -236,7 +221,7 @@ export class TarotCardManager {
    * Get a random card from the deck.
    */
   public getRandomCard(): TarotCard {
-    const randomIndex = Math.floor(this.getSecureRandom() * this.allCards.length);
+    const randomIndex = Math.floor(getSecureRandom() * this.allCards.length);
     return this.allCards[randomIndex];
   }
 
