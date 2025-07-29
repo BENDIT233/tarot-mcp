@@ -582,6 +582,30 @@ export const TAROT_SPREADS: Record<string, TarotSpread> = {
         meaning: "Emotions, intuition, and subconscious influences"
       }
     ]
+  },
+
+  mirror_of_truth: {
+    name: "Mirror of Truth",
+    description: "A 4-card spread designed to clarify relationship confusion through four beams of light: illuminating your perspective, exploring their intentions, revealing objective truth, and guiding future direction",
+    cardCount: 4,
+    positions: [
+      {
+        name: "First Light: Illuminate Yourself",
+        meaning: "Your perspective - how your emotions, inner filters, anxieties, fears, or expectations influence your understanding of the situation"
+      },
+      {
+        name: "Second Light: Explore Their Heart",
+        meaning: "Their intentions - looking beyond surface behavior to explore their true motivations, thoughts, and inner state"
+      },
+      {
+        name: "Third Light: Restore Original Truth",
+        meaning: "Objective facts - stripping away emotions and subjective judgments to present the most neutral and authentic picture of what happened"
+      },
+      {
+        name: "Fourth Light: Guide Future Direction",
+        meaning: "Influence and guidance - based on understanding the truth, pointing you toward the direction to move forward and actions to take"
+      }
+    ]
   }
 };
 

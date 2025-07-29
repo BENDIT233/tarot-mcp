@@ -159,6 +159,8 @@ export class TarotReadingManager {
       interpretation += this.generateMandalaAnalysis(drawnCards);
     } else if (spreadName.toLowerCase().includes("pentagram")) {
       interpretation += this.generatePentagramAnalysis(drawnCards);
+    } else if (spreadName.toLowerCase().includes("mirror of truth")) {
+      interpretation += this.generateMirrorOfTruthAnalysis(drawnCards);
     }
 
     // Overall interpretation
@@ -669,6 +671,101 @@ export class TarotReadingManager {
     if (fire.orientation === "upright") analysis += "Passionate energy drives your actions. ";
     if (earth.orientation === "upright") analysis += "Practical foundations support manifestation. ";
     if (water.orientation === "upright") analysis += "Emotional wisdom guides your intuition. ";
+
+    analysis += "\n";
+    return analysis;
+  }
+
+  /**
+   * Generate Mirror of Truth spread analysis
+   */
+  private generateMirrorOfTruthAnalysis(drawnCards: DrawnCard[]): string {
+    if (drawnCards.length !== 4) return "";
+
+    let analysis = "**Mirror of Truth - Four Beams of Light Analysis:**\n\n";
+    const [yourPerspective, theirIntention, objectiveTruth, futureGuidance] = drawnCards;
+
+    // First Light Analysis - Your Perspective
+    analysis += `**First Light - Illuminate Yourself:** ${yourPerspective.card.name} (${yourPerspective.orientation})\n`;
+    analysis += `Your current emotional state and inner filters show: `;
+    if (yourPerspective.orientation === "upright") {
+      analysis += "Your perception of the situation is relatively clear, your emotional state is stable, and you can view the problem objectively.";
+    }
+    else {
+      analysis += "Your perspective may be influenced by strong emotions, anxiety, or expectations, requiring inner calm to see the truth clearly.";
+    }
+    analysis += "\n\n";
+
+    // Second Light Analysis - Their Intention
+    analysis += `**Second Light - Explore Their Heart:** ${theirIntention.card.name} (${theirIntention.orientation})\n`;
+    analysis += `Their true intentions and inner state indicate: `;
+    if (theirIntention.orientation === "upright") {
+      analysis += "Their motivations are relatively positive and sincere, with good intentions or at least neutral intent behind their actions.";
+    }
+    else {
+      analysis += "They may have complex inner states, their true intentions might not align with surface behavior, or they themselves are confused.";
+    }
+    analysis += "\n\n";
+
+    // Third Light Analysis - Objective Truth
+    analysis += `**Third Light - Restore Original Truth:** ${objectiveTruth.card.name} (${objectiveTruth.orientation})\n`;
+    analysis += `Stripping away all subjective emotions, the truth is: `;
+    if (objectiveTruth.orientation === "upright") {
+      analysis += "The situation itself is relatively simple and clear, you and the other person may have over-interpreted it. The facts are more direct than imagined.";
+    }
+    else {
+      analysis += "The situation does have complexity and hidden layers, requiring more time and information to fully understand.";
+    }
+    analysis += "\n\n";
+
+    // Fourth Light Analysis - Future Guidance
+    analysis += `**Fourth Light - Guide Future Direction:** ${futureGuidance.card.name} (${futureGuidance.orientation})\n`;
+    analysis += `Based on understanding the truth, you should: `;
+    if (futureGuidance.orientation === "upright") {
+      analysis += "Take positive and proactive action, now is a good time to clarify misunderstandings, improve relationships, or make decisions.";
+    }
+    else {
+      analysis += "Maintain patience and observation, don't rush into action, let time and more information reveal the best path forward.";
+    }
+    analysis += "\n\n";
+
+    // Comprehensive Analysis of Four Lights
+    analysis += `**Comprehensive Insights from Four Lights:**\n`;
+    const uprightCount = drawnCards.filter(c => c.orientation === "upright").length;
+
+    // Analyze relationship between your perspective and their intention
+    if (yourPerspective.orientation === theirIntention.orientation) {
+      analysis += `Your perception and their intention are in similar energy states, indicating some synchronicity between you. `;
+    }
+    else {
+      analysis += `Your perception and their intention have energy differences, which may be the source of misunderstanding. `;
+    }
+
+    // Analyze relationship between objective truth and guidance
+    if (objectiveTruth.orientation === futureGuidance.orientation) {
+      analysis += `The nature of the facts aligns with future guidance, indicating you can trust this direction. `;
+    }
+    else {
+      analysis += `The complexity of the facts requires flexibility and openness in your actions. `;
+    }
+
+    // Overall clarity assessment
+    analysis += `\n\n**Clarity of Truth:** ${uprightCount} out of 4 lights shine clearly, `;
+    if (uprightCount === 4) {
+      analysis += "all dimensions are clear, this is a moment of complete truth where decisive action can be taken.";
+    }
+    else if (uprightCount === 3) {
+      analysis += "most of the truth has been revealed, requiring only patience and understanding in one dimension.";
+    }
+    else if (uprightCount === 2) {
+      analysis += "truth is gradually emerging, requiring balance of information from different dimensions to make judgments.";
+    }
+    else if (uprightCount === 1) {
+      analysis += "currently only one dimension is relatively clear, more time is needed for other truths to surface.";
+    }
+    else {
+      analysis += "all dimensions are still in fog, this is a period requiring great patience and inner calm.";
+    }
 
     analysis += "\n";
     return analysis;
