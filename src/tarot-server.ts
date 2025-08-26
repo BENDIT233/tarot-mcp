@@ -53,7 +53,7 @@ export class TarotServer {
             orientation: {
               type: "string",
               enum: ["upright", "reversed"],
-              description: "牌的方向（正位或逆位）",
+              description: "牌的方向。可选：upright、reversed",
               default: "upright",
             },
           },
@@ -69,7 +69,7 @@ export class TarotServer {
             category: {
               type: "string",
               enum: ["all", "major_arcana", "minor_arcana", "wands", "cups", "swords", "pentacles"],
-              description: "按类别筛选牌组",
+              description: "按类别筛选牌组。可选：all、major_arcana、minor_arcana、wands、cups、swords、pentacles",
               default: "all",
             },
           },
@@ -84,7 +84,7 @@ export class TarotServer {
             spreadType: {
               type: "string",
               enum: ["single_card", "three_card", "celtic_cross", "horseshoe", "relationship_cross", "career_path", "decision_making", "spiritual_guidance", "year_ahead", "chakra_alignment", "shadow_work", "venus_love", "tree_of_life", "astrological_houses", "mandala", "pentagram", "mirror_of_truth"],
-              description: "要使用的塔罗牌阵类型",
+              description: "要使用的塔罗牌阵类型。可选：single_card、three_card、celtic_cross、horseshoe、relationship_cross、career_path、decision_making、spiritual_guidance、year_ahead、chakra_alignment、shadow_work、venus_love、tree_of_life、astrological_houses、mandala、pentagram、mirror_of_truth。注意：日常运势建议选择single_card或three_card",
             },
             question: {
               type: "string",
@@ -111,17 +111,17 @@ export class TarotServer {
             suit: {
               type: "string",
               enum: ["wands", "cups", "swords", "pentacles"],
-              description: "按花色筛选",
+              description: "按花色筛选。可选：wands、cups、swords、pentacles",
             },
             arcana: {
               type: "string",
               enum: ["major", "minor"],
-              description: "按阿卡纳类型筛选",
+              description: "按阿卡纳类型筛选。可选：major、minor",
             },
             element: {
               type: "string",
               enum: ["fire", "water", "air", "earth"],
-              description: "按元素筛选",
+              description: "按元素筛选。可选：fire、water、air、earth",
             },
             number: {
               type: "number",
@@ -130,7 +130,7 @@ export class TarotServer {
             orientation: {
               type: "string",
               enum: ["upright", "reversed"],
-              description: "在正位或逆位含义中搜索",
+              description: "在正位或逆位含义中搜索。可选：upright、reversed",
             },
             limit: {
               type: "number",
@@ -183,17 +183,17 @@ export class TarotServer {
             suit: {
               type: "string",
               enum: ["wands", "cups", "swords", "pentacles"],
-              description: "按花色筛选",
+              description: "按花色筛选。可选：wands、cups、swords、pentacles",
             },
             arcana: {
               type: "string",
               enum: ["major", "minor"],
-              description: "按阿卡纳类型筛选",
+              description: "按阿卡纳类型筛选。可选：major、minor",
             },
             element: {
               type: "string",
               enum: ["fire", "water", "air", "earth"],
-              description: "按元素筛选",
+              description: "按元素筛选。可选：fire、water、air、earth",
             },
           },
         },

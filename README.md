@@ -1,13 +1,9 @@
 # 🔮 Tarot MCP 服务器
 
-这是一个专业的 Rider-Waite 塔罗牌解读 MCP (Model Context Protocol) 服务器，使用 Node.js 和 TypeScript 构建。本项目基于原仓库 <mcurl name="https://github.com/fzlzjerry/tarot-mcp" url="https://github.com/fzlzjerry/tarot-mcp"></mcurl> 进行二次开发。
+这是一个专业的 Rider-Waite 塔罗牌解读 MCP (Model Context Protocol) 服务器，使用 Node.js 和 TypeScript 构建。
 
-> **注意**：本项目的二次开发完全由 AI 完成。
-
-## 📜 版本历史
-
-- **v1.1.0 (2025-08-26)**：新增对 MCP 2025-03-26 协议中 Streamable HTTP 格式的原生支持，为 AI Agent 集成提供实时、双向的通信能力。
-- **v1.0.0 (2025-07-28)**：初始版本，提供基于 Rider-Waite 牌组的专业塔罗牌解读功能。
+> [!NOTE] 
+> 本项目为开源项目，在[tarot-mcp](https://github.com/fzlzjerry/tarot-mcp)的基础上进行二次开发，本项目的二次开发完全由 AI 完成。
 
 ## ✨ 核心功能
 
@@ -24,86 +20,51 @@
   - **Docker 化**：提供 Dockerfile 和 docker-compose.yml，支持一键部署。
   - **完全类型安全**：使用 TypeScript 编写，保证代码质量。
 
-## 🔌 API 与使用示例
 
-### Streamable HTTP API (MCP 2025-03-26)
+## 🚀 部署指南
 
-您可以将任何兼容 MCP 2025-03-26 的客户端（如 Dify）连接到以下端点：
+### 方法一：Docker Compose 部署（推荐）
 
-- **URL**：`http://<your-server-ip>:9801/mcp`
-- **协议**：`HTTP`
-- **会话管理**：服务器会自动处理会话创建。`Mcp-Session-Id` 将在 `initialize` 请求的响应头中返回。
-
-#### 1. 初始化会话
-
-此请求将初始化一个新会话并返回会话 ID。
-
+1. **克隆项目**
 ```bash
-curl -i -X POST http://localhost:9801/mcp \
--H "Content-Type: application/json" \
--H "Accept: application/json, text/event-stream" \
--d '{
-  "mcp_protocol_version": "2025-03-26",
-  "method": "initialize",
-  "params": {}
-}'
+git clone <repository-url>
+cd tarot-mcp
 ```
 
-**预期响应**：
-- `200 OK` 状态码，并在响应头中包含 `Mcp-Session-Id`。
-- 包含服务器信息的 JSON 响应体。
-
-#### 2. 获取可用工具列表
-
-使用上一步获取的 `Mcp-Session-Id` 来请求可用工具列表。
-
-```bash
-# 将 <your-session-id> 替换为 initialize 请求返回的 ID
-curl -X POST http://localhost:9801/mcp \
--H "Content-Type: application/json" \
--H "Accept: application/json, text/event-stream" \
--H "Mcp-Session-Id: <your-session-id>" \
--d '{
-  "mcp_protocol_version": "2025-03-26",
-  "method": "tools/list",
-  "params": {}
-}'
-```
-
-**预期响应**：
-- 包含所有可用工具信息的 Server-Sent Events (SSE) 事件流。
-
-#### 3. 调用工具
-
-执行一个工具调用，例如 `get_random_cards`。
-
-```bash
-# 将 <your-session-id> 替换为你的会话 ID
-curl -X POST http://localhost:9801/mcp \
--H "Content-Type: application/json" \
--H "Accept: application/json, text/event-stream" \
--H "Mcp-Session-Id: <your-session-id>" \
--d '{
-  "mcp_protocol_version": "2025-03-26",
-  "method": "tools/call",
-  "params": {
-    "tool_name": "get_random_cards",
-    "parameters": {
-      "count": 3
-    }
-  }
-}'
-```
-
-**预期响应**：
-- 包含工具调用结果（例如随机抽取的塔罗牌）的 SSE 事件流。
-
-## 🐳 Docker 部署
-
-为了方便部署，项目提供了 `docker-compose.yml` 文件。
-
+2. **启动服务**
 ```bash
 docker-compose up --build -d
 ```
 
+3. **使用**
 服务将在 `http://localhost:9801` 上可用。
+
+### 方法二：NPM 部署
+
+1. **克隆项目**
+```bash
+git clone <repository-url>
+cd tarot-mcp
+```
+
+2. **安装依赖**
+```bash
+npm install
+```
+
+3. **构建项目**
+```bash
+npm run build
+```
+
+4. **启动服务**
+```bash
+# 开发模式（自动重载）
+npm run dev
+
+# 生产模式
+npm start
+```
+
+## 相关项目
+- [tarot-mcp](https://github.com/fzlzjerry/tarot-mcp)：原版项目
