@@ -20,7 +20,7 @@ A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot c
 - Complete 78-card Rider-Waite deck with detailed interpretations
 - 11 professional tarot spreads (Single Card, Three Card, Celtic Cross, Horseshoe, Relationship Cross, Career Path, Decision Making, Spiritual Guidance, Year Ahead, Chakra Alignment, Shadow Work)
 - **Custom Spread Creation**: AI can create custom tarot spreads when existing ones don't fit
-- Multi-transport MCP server (stdio, HTTP, SSE)
+- Multi-transport MCP server (stdio, Streamable HTTP, FastMCP)
 - Advanced interpretation engine with elemental analysis
 - Cryptographically secure card shuffling and drawing
 - Context-aware meaning selection
@@ -49,7 +49,7 @@ A professional-grade Model Context Protocol (MCP) server for Rider-Waite tarot c
 - **Energy Flow Assessment**: Three Card spread progression and overall reading energy analysis
 
 ### 🚀 Technical Excellence
-- **Multi-Transport Support**: stdio (MCP), HTTP, and SSE protocols
+- **Multi-Transport Support**: stdio (MCP), Streamable HTTP, and FastMCP protocols
 - **Cryptographic Randomness**: Fisher-Yates shuffle with crypto-secure random number generation
 - **50/50 Fair Distribution**: Equal probability for upright and reversed card orientations
 - **Production Ready**: Docker containerization, health checks, and comprehensive error handling
@@ -239,8 +239,9 @@ When running in HTTP mode, the following endpoints are available:
 - **Secure Randomization**: Cryptographically secure card drawing and shuffling
 
 ### MCP Protocol
-- `GET /sse` - Server-Sent Events endpoint for MCP clients
-- `POST /mcp` - HTTP-based MCP endpoint for direct protocol communication
+- `POST /mcp` - Streamable HTTP MCP endpoint (recommended for Dify integration)
+- `GET /health` - Health check endpoint for monitoring
+- `GET /info` - Server information and capabilities
 
 ## 🛠️ MCP Tools
 
@@ -384,10 +385,16 @@ Create a custom tarot spread and draw cards for it. Perfect for AI when no exist
 node dist/index.js [options]
 
 Options:
-  --transport <type>    Transport type: stdio, http, sse (default: stdio)
-  --port <number>       Port for HTTP/SSE transport (default: 3000)
-  --help, -h           Show help message
+  -t, --transport <type>    Transport type: stdio, streamable, fastmcp, http (default: stdio)
+  -p, --port <number>       Port number for HTTP-based transports (default: 3000)
+  -h, --help               Show this help message
 ```
+
+#### Transport Types
+- **stdio**: Standard input/output for MCP clients like Claude Desktop
+- **streamable**: Streamable HTTP transport (recommended for Dify integration)
+- **fastmcp**: FastMCP HTTP transport with automatic tool registration
+- **http**: Legacy HTTP server (backward compatibility)
 
 ### Environment Variables
 
@@ -424,9 +431,9 @@ Or for local development:
 }
 ```
 
-### HTTP-based MCP Clients
+### Streamable HTTP MCP Clients (Recommended)
 
-For clients supporting HTTP MCP:
+For clients supporting Streamable HTTP MCP (like Dify):
 
 ```json
 {
@@ -438,18 +445,105 @@ For clients supporting HTTP MCP:
 }
 ```
 
-### SSE-based MCP Clients
+**Start server**: `node dist/index.js -t streamable -p 3000`
 
-For clients supporting Server-Sent Events:
+### FastMCP HTTP Clients
+
+For clients supporting FastMCP protocol:
 
 ```json
 {
   "mcpServers": {
     "tarot": {
-      "url": "http://localhost:3000/sse"
+      "url": "http://localhost:3000"
     }
   }
 }
+```
+
+**Start server**: `node dist/index.js -t fastmcp -p 3000`
+
+### Legacy HTTP Clients
+
+For backward compatibility with older HTTP implementations:
+
+```json
+{
+  "mcpServers": {
+    "tarot": {
+      "url": "http://localhost:3000/mcp"
+    }
+  }
+}
+```
+
+**Start server**: `node dist/index.js -t http -p 3000`
+
+## 🤖 Dify Integration
+
+This server is fully compatible with Dify's MCP integration. Dify supports HTTP transport only, so use the Streamable HTTP transport for optimal compatibility.
+
+### Quick Setup for Dify
+
+1. **Start the server with Streamable HTTP transport**:
+   ```bash
+   node dist/index.js -t streamable -p 3000
+   ```
+
+2. **Configure Dify MCP connection**:
+   - MCP Server URL: `http://localhost:3000/mcp`
+   - Transport: HTTP
+   - Timeout: 30000ms (recommended)
+
+3. **Verify connection**:
+   ```bash
+   curl http://localhost:3000/health
+   curl http://localhost:3000/info
+   ```
+
+### Dify Configuration Example
+
+```json
+{
+  "mcp_server_url": "http://localhost:3000/mcp",
+  "transport": "http",
+  "timeout": 30000,
+  "description": "Professional Tarot MCP Server with 78-card Rider-Waite deck"
+}
+```
+
+### Available Tools in Dify
+
+Once connected, Dify will have access to all 8 MCP tools:
+- **get_card_info**: Get detailed card information
+- **list_all_cards**: Browse the complete tarot deck
+- **perform_reading**: Professional tarot readings with 11 spreads
+- **create_custom_spread**: Create unlimited custom spreads
+- **search_cards**: Advanced card search and filtering
+- **find_similar_cards**: Discover related cards
+- **get_database_analytics**: Database statistics and insights
+- **get_random_cards**: Random card selection for practice
+
+### Docker Deployment for Dify
+
+For production Dify integration, use Docker:
+
+```yaml
+version: '3.8'
+services:
+  tarot-mcp:
+    image: tarot-mcp:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    command: node dist/index.js -t streamable -p 3000
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 ```
 
 ## 📚 Usage Examples

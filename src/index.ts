@@ -8,68 +8,137 @@ import {
 } from "@modelcontextprotocol/sdk/types.js";
 import { TarotServer } from "./tarot-server.js";
 import { TarotHttpServer } from "./http-server.js";
+import { TarotFastMCPServer } from "./fastmcp-server.js";
+import { StreamableHTTPServer } from "./transport/streamable-http.js";
 
 /**
  * Parse command line arguments
  */
-function parseArgs(): { transport: string; port: number } {
+function parseArgs(): {
+  transport: 'stdio' | 'http' | 'streamable' | 'fastmcp';
+  port: number;
+  help: boolean;
+} {
   const args = process.argv.slice(2);
-  let transport = "stdio";
+  let transport: 'stdio' | 'http' | 'streamable' | 'fastmcp' = 'stdio';
   let port = 3000;
+  let help = false;
 
   for (let i = 0; i < args.length; i++) {
-    switch (args[i]) {
-      case "--transport":
-        transport = args[i + 1] || "stdio";
-        i++;
+    const arg = args[i];
+    switch (arg) {
+      case '--transport':
+      case '-t':
+        const transportValue = args[++i];
+        if (['stdio', 'http', 'streamable', 'fastmcp'].includes(transportValue)) {
+          transport = transportValue as 'stdio' | 'http' | 'streamable' | 'fastmcp';
+        } else {
+          console.error(`Invalid transport: ${transportValue}. Use 'stdio', 'http', 'streamable', or 'fastmcp'.`);
+          process.exit(1);
+        }
         break;
-      case "--port":
-        port = parseInt(args[i + 1]) || 3000;
-        i++;
+      case '--port':
+      case '-p':
+        const portValue = parseInt(args[++i], 10);
+        if (isNaN(portValue) || portValue < 1 || portValue > 65535) {
+          console.error(`Invalid port: ${args[i]}. Use a number between 1 and 65535.`);
+          process.exit(1);
+        }
+        port = portValue;
         break;
-      case "--help":
-      case "-h":
-        console.log(`
-Tarot MCP Server
+      case '--help':
+      case '-h':
+        help = true;
+        break;
+      default:
+        console.error(`Unknown argument: ${arg}`);
+        process.exit(1);
+    }
+  }
+
+  return { transport, port, help };
+}
+
+/**
+ * Display help information
+ */
+function showHelp(): void {
+  console.log(`
+🔮 Tarot MCP Server
 
 Usage: node dist/index.js [options]
 
 Options:
-  --transport <type>    Transport type: stdio, http, sse (default: stdio)
-  --port <number>       Port for HTTP/SSE transport (default: 3000)
-  --help, -h           Show this help message
+  -t, --transport <type>    Transport type: 'stdio', 'http', 'streamable', or 'fastmcp' (default: stdio)
+  -p, --port <number>       Port number for HTTP-based transports (default: 3000)
+  -h, --help               Show this help message
 
 Examples:
   node dist/index.js                           # Run with stdio transport
-  node dist/index.js --transport http          # Run HTTP server on port 3000
-  node dist/index.js --transport http --port 8080  # Run HTTP server on port 8080
-        `);
-        process.exit(0);
-    }
-  }
+  node dist/index.js -t streamable -p 3000    # Run with Streamable HTTP (recommended for Dify)
+  node dist/index.js -t fastmcp -p 3000       # Run with FastMCP HTTP transport
+  node dist/index.js -t http -p 3000          # Run with legacy HTTP transport
+  node dist/index.js --transport stdio        # Explicitly use stdio transport
 
-  return { transport, port };
+Transport Types:
+  stdio:      Standard input/output for MCP clients like Claude Desktop
+  streamable: Streamable HTTP transport (recommended for Dify integration)
+  fastmcp:    FastMCP HTTP transport with automatic tool registration
+  http:       Legacy HTTP server (backward compatibility)
+
+Dify Integration:
+  Use 'streamable' transport and configure Dify with: http://your-server:3000/mcp
+
+For more information, visit: https://github.com/your-repo/tarot-mcp
+`);
 }
 
 /**
  * Main entry point for the Tarot MCP Server
  */
-async function main() {
-  const { transport, port } = parseArgs();
+async function main(): Promise<void> {
+  const { transport, port, help } = parseArgs();
 
-  console.error(`Starting Tarot MCP Server with ${transport} transport...`);
+  if (help) {
+    showHelp();
+    return;
+  }
 
-  // Asynchronously initialize the TarotServer
-  const tarotServer = await TarotServer.create();
-  console.error("Tarot card data loaded successfully.");
+  try {
+    // Initialize the tarot server
+    const tarotServer = await TarotServer.create();
 
-  if (transport === "http" || transport === "sse") {
-    // Start HTTP server with the initialized TarotServer
-    const httpServer = new TarotHttpServer(tarotServer, port);
-    await httpServer.start();
-  } else {
-    // Start stdio server with the initialized TarotServer
-    await startStdioServer(tarotServer);
+    switch (transport) {
+      case 'stdio':
+        await startStdioServer(tarotServer);
+        break;
+        
+      case 'streamable':
+        console.log('🔮 Starting Tarot MCP Server with Streamable HTTP transport...');
+        const streamableServer = new StreamableHTTPServer(tarotServer, port);
+        await streamableServer.start();
+        break;
+        
+      case 'fastmcp':
+        console.log('🔮 Starting Tarot MCP Server with FastMCP transport...');
+        const fastmcpServer = new TarotFastMCPServer();
+        await fastmcpServer.initialize();
+        await fastmcpServer.startHTTP({ port });
+        break;
+        
+      case 'http':
+        console.log('🔮 Starting Tarot MCP Server with legacy HTTP transport...');
+        const httpServer = new TarotHttpServer(tarotServer, port);
+        await httpServer.start();
+        break;
+        
+      default:
+        console.error(`Unsupported transport: ${transport}`);
+        process.exit(1);
+    }
+  } catch (error) {
+    console.error('Failed to start server:', error);
+    process.exit(1);
   }
 }
 

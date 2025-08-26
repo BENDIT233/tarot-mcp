@@ -248,6 +248,62 @@ export class TarotServer {
   }
 
   /**
+   * Get detailed information about a specific tarot card
+   */
+  public async getCardInfo(cardName: string, orientation?: string): Promise<any> {
+    return this.cardManager.getCardInfo(cardName, (orientation || "upright") as any);
+  }
+
+  /**
+   * List all available tarot cards
+   */
+  public async listAllCards(category?: string): Promise<any> {
+    return this.cardManager.listAllCards((category || "all") as any);
+  }
+
+  /**
+   * Perform a tarot reading
+   */
+  public async performReading(spreadType: string, question?: string, sessionId?: string): Promise<any> {
+    return this.readingManager.performReading(spreadType, question || "", sessionId);
+  }
+
+  /**
+   * Search for tarot cards
+   */
+  public async searchCards(query: string, suit?: string, element?: string, limit?: number): Promise<any> {
+    return this.handleSearchCards({ keyword: query, suit, element, limit });
+  }
+
+  /**
+   * Find similar cards
+   */
+  public async findSimilarCards(cardName: string, limit?: number): Promise<any> {
+    return this.handleFindSimilarCards({ cardName, limit });
+  }
+
+  /**
+   * Get database analytics
+   */
+  public async getDatabaseAnalytics(): Promise<any> {
+    return this.handleGetAnalytics({});
+  }
+
+  /**
+   * Get random cards
+   */
+  public async getRandomCards(count: number, includeReversed?: boolean): Promise<any> {
+    return this.handleGetRandomCards({ count, includeReversed });
+  }
+
+  /**
+   * Create custom spread
+   */
+  public async createCustomSpread(spreadName: string, description: string, positions: string[], cards?: string[], context?: string): Promise<any> {
+    return this.handleCreateCustomSpread({ spreadName, description, positions, cards, context });
+  }
+
+  /**
    * Executes a specific tool with the provided arguments
    */
   public async executeTool(toolName: string, args: Record<string, any>): Promise<string> {

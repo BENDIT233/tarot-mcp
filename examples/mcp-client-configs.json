@@ -10,8 +10,8 @@
       }
     }
   },
-  "cursor_local_http": {
-    "description": "Cursor IDE with local HTTP transport",
+  "cursor_local_streamable": {
+    "description": "Cursor IDE with Streamable HTTP transport (recommended)",
     "config": {
       "mcpServers": {
         "tarot": {
@@ -20,8 +20,18 @@
       }
     }
   },
-  "cursor_remote_http": {
-    "description": "Cursor IDE with remote HTTP transport",
+  "cursor_local_fastmcp": {
+    "description": "Cursor IDE with FastMCP HTTP transport",
+    "config": {
+      "mcpServers": {
+        "tarot": {
+          "url": "http://localhost:3000"
+        }
+      }
+    }
+  },
+  "cursor_remote_streamable": {
+    "description": "Cursor IDE with remote Streamable HTTP transport",
     "config": {
       "mcpServers": {
         "tarot": {
@@ -55,14 +65,27 @@
       }
     }
   },
-  "vs_code_http": {
-    "description": "VS Code with HTTP server",
+  "vs_code_streamable": {
+    "description": "VS Code with Streamable HTTP server",
     "config": {
       "mcp": {
         "servers": {
           "tarot": {
             "type": "http",
             "url": "http://localhost:3000/mcp"
+          }
+        }
+      }
+    }
+  },
+  "vs_code_fastmcp": {
+    "description": "VS Code with FastMCP server",
+    "config": {
+      "mcp": {
+        "servers": {
+          "tarot": {
+            "type": "http",
+            "url": "http://localhost:3000"
           }
         }
       }
@@ -79,15 +102,24 @@
       }
     }
   },
-  "windsurf_sse": {
-    "description": "Windsurf with SSE transport",
+  "windsurf_streamable": {
+    "description": "Windsurf with Streamable HTTP transport",
     "config": {
       "mcpServers": {
         "tarot": {
-          "serverUrl": "http://localhost:3000/sse"
+          "url": "http://localhost:3000/mcp"
         }
       }
     }
+  },
+  "dify_integration": {
+    "description": "Dify MCP integration (recommended configuration)",
+    "config": {
+      "mcp_server_url": "http://localhost:3000/mcp",
+      "transport": "http",
+      "timeout": 30000
+    },
+    "server_command": "node dist/index.js -t streamable -p 3000"
   },
   "context7_style": {
     "description": "Context7-style configuration for compatibility",
@@ -100,8 +132,8 @@
       }
     }
   },
-  "docker_compose": {
-    "description": "Using with Docker Compose",
+  "docker_compose_streamable": {
+    "description": "Docker Compose with Streamable HTTP transport",
     "config": {
       "mcpServers": {
         "tarot": {
@@ -115,7 +147,40 @@
         "tarot-mcp": {
           "image": "tarot-mcp:latest",
           "ports": ["3000:3000"],
-          "environment": ["NODE_ENV=production"],
+          "environment": [
+            "NODE_ENV=production"
+          ],
+          "command": "node dist/index.js -t streamable -p 3000",
+          "restart": "unless-stopped",
+          "healthcheck": {
+            "test": ["CMD", "curl", "-f", "http://localhost:3000/health"],
+            "interval": "30s",
+            "timeout": "10s",
+            "retries": 3
+          }
+        }
+      }
+    }
+  },
+  "docker_compose_fastmcp": {
+    "description": "Docker Compose with FastMCP transport",
+    "config": {
+      "mcpServers": {
+        "tarot": {
+          "url": "http://localhost:3000"
+        }
+      }
+    },
+    "docker_compose": {
+      "version": "3.8",
+      "services": {
+        "tarot-mcp": {
+          "image": "tarot-mcp:latest",
+          "ports": ["3000:3000"],
+          "environment": [
+            "NODE_ENV=production"
+          ],
+          "command": "node dist/index.js -t fastmcp -p 3000",
           "restart": "unless-stopped"
         }
       }
