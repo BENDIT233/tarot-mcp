@@ -5,605 +5,605 @@ import { TarotSpread } from "./types.js";
  */
 export const TAROT_SPREADS: Record<string, TarotSpread> = {
   single_card: {
-    name: "Single Card",
-    description: "A simple one-card draw for quick insight or daily guidance",
+    name: "单张牌",
+    description: "简单的单张牌抽取，用于快速洞察或日常指导",
     cardCount: 1,
     positions: [
       {
-        name: "The Message",
-        meaning: "The main insight, guidance, or energy for your question"
+        name: "信息",
+        meaning: "针对你的问题的主要洞察、指导或能量"
       }
     ]
   },
 
   three_card: {
-    name: "Three Card Spread",
-    description: "A versatile three-card spread that can represent past/present/future, situation/action/outcome, or mind/body/spirit",
+    name: "三张牌牌阵",
+    description: "多功能的三张牌牌阵，可以代表过去/现在/未来、情况/行动/结果，或身/心/灵",
     cardCount: 3,
     positions: [
       {
-        name: "Past/Situation",
-        meaning: "What has led to this situation or the foundation of the matter"
+        name: "过去/情况",
+        meaning: "导致这种情况的原因或事情的根基"
       },
       {
-        name: "Present/Action",
-        meaning: "The current state or what action should be taken"
+        name: "现在/行动",
+        meaning: "当前状态或应该采取的行动"
       },
       {
-        name: "Future/Outcome",
-        meaning: "The likely outcome or future development"
+        name: "未来/结果",
+        meaning: "可能的结果或未来发展"
       }
     ]
   },
 
   celtic_cross: {
-    name: "Celtic Cross",
-    description: "The most famous tarot spread, providing comprehensive insight into a situation with 10 cards",
+    name: "凯尔特十字",
+    description: "最著名的塔罗牌阵，用10张牌提供对情况的全面洞察",
     cardCount: 10,
     positions: [
       {
-        name: "Present Situation",
-        meaning: "The heart of the matter, your current situation or state of mind"
+        name: "当前情况",
+        meaning: "事情的核心，你当前的情况或心理状态"
       },
       {
-        name: "Challenge/Cross",
-        meaning: "The challenge you face or what crosses you in this situation"
+        name: "挑战/阻碍",
+        meaning: "你面临的挑战或在这种情况下阻碍你的因素"
       },
       {
-        name: "Distant Past/Foundation",
-        meaning: "The foundation of the situation, distant past influences"
+        name: "遥远过去/根基",
+        meaning: "情况的根基，遥远过去的影响"
       },
       {
-        name: "Recent Past",
-        meaning: "Recent events or influences that are now passing away"
+        name: "近期过去",
+        meaning: "最近的事件或正在消逝的影响"
       },
       {
-        name: "Possible Outcome",
-        meaning: "One possible outcome if things continue as they are"
+        name: "可能结果",
+        meaning: "如果事情按现状继续发展的一种可能结果"
       },
       {
-        name: "Near Future",
-        meaning: "What is approaching in the immediate future"
+        name: "近期未来",
+        meaning: "在不久的将来即将到来的事情"
       },
       {
-        name: "Your Approach",
-        meaning: "Your approach to the situation, how you see yourself"
+        name: "你的态度",
+        meaning: "你对情况的态度，你如何看待自己"
       },
       {
-        name: "External Influences",
-        meaning: "How others see you or external influences affecting the situation"
+        name: "外部影响",
+        meaning: "他人如何看待你或影响情况的外部因素"
       },
       {
-        name: "Hopes and Fears",
-        meaning: "Your inner feelings, hopes, and fears about the situation"
+        name: "希望与恐惧",
+        meaning: "你对情况的内心感受、希望和恐惧"
       },
       {
-        name: "Final Outcome",
-        meaning: "The final outcome, the culmination of all influences"
+        name: "最终结果",
+        meaning: "最终结果，所有影响的顶点"
       }
     ]
   },
 
   horseshoe: {
-    name: "Horseshoe Spread",
-    description: "A 7-card spread that provides guidance on a specific situation, showing past influences, present circumstances, and future possibilities",
+    name: "马蹄形牌阵",
+    description: "7张牌的牌阵，为特定情况提供指导，显示过去影响、当前环境和未来可能性",
     cardCount: 7,
     positions: [
       {
-        name: "Past Influences",
-        meaning: "Past events and influences that have led to the current situation"
+        name: "过去影响",
+        meaning: "导致当前情况的过去事件和影响"
       },
       {
-        name: "Present Situation",
-        meaning: "Your current circumstances and state of mind"
+        name: "当前情况",
+        meaning: "你当前的环境和心理状态"
       },
       {
-        name: "Hidden Influences",
-        meaning: "Hidden factors or subconscious influences affecting the situation"
+        name: "隐藏影响",
+        meaning: "影响情况的隐藏因素或潜意识影响"
       },
       {
-        name: "Obstacles",
-        meaning: "Challenges or obstacles you may face"
+        name: "障碍",
+        meaning: "你可能面临的挑战或障碍"
       },
       {
-        name: "External Influences",
-        meaning: "Outside influences, other people's attitudes, or environmental factors"
+        name: "外部影响",
+        meaning: "外部影响、他人的态度或环境因素"
       },
       {
-        name: "Advice",
-        meaning: "What you should do or the best approach to take"
+        name: "建议",
+        meaning: "你应该做什么或采取的最佳方法"
       },
       {
-        name: "Likely Outcome",
-        meaning: "The most probable outcome if you follow the advice given"
+        name: "可能结果",
+        meaning: "如果你遵循所给建议的最可能结果"
       }
     ]
   },
 
   relationship_cross: {
-    name: "Relationship Cross",
-    description: "A 7-card spread specifically designed for examining relationships, whether romantic, friendship, or family",
+    name: "关系十字牌阵",
+    description: "专门为检视关系而设计的7张牌牌阵，无论是恋爱、友谊还是家庭关系",
     cardCount: 7,
     positions: [
       {
-        name: "You",
-        meaning: "Your role, feelings, and contribution to the relationship"
+        name: "你",
+        meaning: "你在关系中的角色、感受和贡献"
       },
       {
-        name: "Your Partner",
-        meaning: "Their role, feelings, and contribution to the relationship"
+        name: "你的伴侣",
+        meaning: "他们在关系中的角色、感受和贡献"
       },
       {
-        name: "The Relationship",
-        meaning: "The current state and dynamic of the relationship itself"
+        name: "关系本身",
+        meaning: "关系本身的当前状态和动态"
       },
       {
-        name: "What Unites You",
-        meaning: "Common ground, shared values, and what brings you together"
+        name: "联结你们的因素",
+        meaning: "共同点、共同价值观和让你们走到一起的因素"
       },
       {
-        name: "What Divides You",
-        meaning: "Differences, conflicts, and what creates tension"
+        name: "分离你们的因素",
+        meaning: "差异、冲突和造成紧张的因素"
       },
       {
-        name: "Advice",
-        meaning: "Guidance for improving and nurturing the relationship"
+        name: "建议",
+        meaning: "改善和培养关系的指导"
       },
       {
-        name: "Future Potential",
-        meaning: "Where the relationship is heading and its potential outcome"
+        name: "未来潜力",
+        meaning: "关系的发展方向和潜在结果"
       }
     ]
   },
 
   career_path: {
-    name: "Career Path Spread",
-    description: "A 6-card spread for career guidance, exploring your professional journey and opportunities",
+    name: "职业道路牌阵",
+    description: "用于职业指导的6张牌牌阵，探索你的职业旅程和机会",
     cardCount: 6,
     positions: [
       {
-        name: "Current Career Situation",
-        meaning: "Your present professional circumstances and feelings about work"
+        name: "当前职业状况",
+        meaning: "你目前的职业环境和对工作的感受"
       },
       {
-        name: "Your Skills and Talents",
-        meaning: "Your natural abilities and developed skills that serve your career"
+        name: "你的技能和天赋",
+        meaning: "服务于你职业的天生能力和已发展的技能"
       },
       {
-        name: "Career Challenges",
-        meaning: "Obstacles or difficulties you face in your professional life"
+        name: "职业挑战",
+        meaning: "你在职业生活中面临的障碍或困难"
       },
       {
-        name: "Hidden Opportunities",
-        meaning: "Unseen possibilities or potential career paths to explore"
+        name: "隐藏机会",
+        meaning: "未见的可能性或值得探索的潜在职业道路"
       },
       {
-        name: "Action to Take",
-        meaning: "Specific steps or approaches to advance your career"
+        name: "应采取的行动",
+        meaning: "推进职业发展的具体步骤或方法"
       },
       {
-        name: "Career Outcome",
-        meaning: "The likely result of following the guidance provided"
+        name: "职业结果",
+        meaning: "遵循所提供指导的可能结果"
       }
     ]
   },
 
   decision_making: {
-    name: "Decision Making Spread",
-    description: "A 5-card spread to help you make important decisions by examining all aspects of your choices",
+    name: "决策制定牌阵",
+    description: "5张牌的牌阵，通过检视你选择的各个方面来帮助你做出重要决定",
     cardCount: 5,
     positions: [
       {
-        name: "The Situation",
-        meaning: "The current circumstances requiring a decision"
+        name: "情况",
+        meaning: "需要做出决定的当前环境"
       },
       {
-        name: "Option A",
-        meaning: "The first choice and its potential consequences"
+        name: "选择A",
+        meaning: "第一个选择及其潜在后果"
       },
       {
-        name: "Option B",
-        meaning: "The second choice and its potential consequences"
+        name: "选择B",
+        meaning: "第二个选择及其潜在后果"
       },
       {
-        name: "What You Need to Know",
-        meaning: "Hidden factors or important information to consider"
+        name: "你需要知道的",
+        meaning: "需要考虑的隐藏因素或重要信息"
       },
       {
-        name: "Recommended Path",
-        meaning: "The best course of action based on all factors"
+        name: "推荐路径",
+        meaning: "基于所有因素的最佳行动方案"
       }
     ]
   },
 
   spiritual_guidance: {
-    name: "Spiritual Guidance Spread",
-    description: "A 6-card spread for spiritual development and connecting with your higher self",
+    name: "灵性指导牌阵",
+    description: "用于灵性发展和与高我连接的6张牌牌阵",
     cardCount: 6,
     positions: [
       {
-        name: "Your Spiritual State",
-        meaning: "Your current spiritual condition and level of awareness"
+        name: "你的灵性状态",
+        meaning: "你当前的灵性状况和觉知水平"
       },
       {
-        name: "Spiritual Lessons",
-        meaning: "What the universe is trying to teach you right now"
+        name: "灵性课题",
+        meaning: "宇宙现在试图教给你的东西"
       },
       {
-        name: "Blocks to Growth",
-        meaning: "What is hindering your spiritual development"
+        name: "成长阻碍",
+        meaning: "阻碍你灵性发展的因素"
       },
       {
-        name: "Spiritual Gifts",
-        meaning: "Your natural spiritual abilities and intuitive talents"
+        name: "灵性天赋",
+        meaning: "你天生的灵性能力和直觉天赋"
       },
       {
-        name: "Guidance from Above",
-        meaning: "Messages from your higher self or spiritual guides"
+        name: "来自上方的指导",
+        meaning: "来自你的高我或灵性向导的信息"
       },
       {
-        name: "Next Steps",
-        meaning: "How to advance on your spiritual journey"
+        name: "下一步",
+        meaning: "如何在灵性旅程中前进"
       }
     ]
   },
 
   year_ahead: {
-    name: "Year Ahead Spread",
-    description: "A 13-card spread providing insights for the coming year, with one card for each month plus an overall theme",
+    name: "年度展望牌阵",
+    description: "13张牌的牌阵，为来年提供洞察，每个月一张牌加上整体主题",
     cardCount: 13,
     positions: [
       {
-        name: "Overall Theme",
-        meaning: "The main theme and energy for the entire year"
+        name: "整体主题",
+        meaning: "整年的主要主题和能量"
       },
       {
-        name: "January",
-        meaning: "What to expect and focus on in January"
+        name: "一月",
+        meaning: "一月的期待和关注重点"
       },
       {
-        name: "February",
-        meaning: "What to expect and focus on in February"
+        name: "二月",
+        meaning: "二月的期待和关注重点"
       },
       {
-        name: "March",
-        meaning: "What to expect and focus on in March"
+        name: "三月",
+        meaning: "三月的期待和关注重点"
       },
       {
-        name: "April",
-        meaning: "What to expect and focus on in April"
+        name: "四月",
+        meaning: "四月的期待和关注重点"
       },
       {
-        name: "May",
-        meaning: "What to expect and focus on in May"
+        name: "五月",
+        meaning: "五月的期待和关注重点"
       },
       {
-        name: "June",
-        meaning: "What to expect and focus on in June"
+        name: "六月",
+        meaning: "六月的期待和关注重点"
       },
       {
-        name: "July",
-        meaning: "What to expect and focus on in July"
+        name: "七月",
+        meaning: "七月的期待和关注重点"
       },
       {
-        name: "August",
-        meaning: "What to expect and focus on in August"
+        name: "八月",
+        meaning: "八月的期待和关注重点"
       },
       {
-        name: "September",
-        meaning: "What to expect and focus on in September"
+        name: "九月",
+        meaning: "九月的期待和关注重点"
       },
       {
-        name: "October",
-        meaning: "What to expect and focus on in October"
+        name: "十月",
+        meaning: "十月的期待和关注重点"
       },
       {
-        name: "November",
-        meaning: "What to expect and focus on in November"
+        name: "十一月",
+        meaning: "十一月的期待和关注重点"
       },
       {
-        name: "December",
-        meaning: "What to expect and focus on in December"
+        name: "十二月",
+        meaning: "十二月的期待和关注重点"
       }
     ]
   },
 
   chakra_alignment: {
-    name: "Chakra Alignment Spread",
-    description: "A 7-card spread examining the energy centers of your body for healing and balance",
+    name: "脉轮对齐牌阵",
+    description: "检视身体能量中心以获得疗愈和平衡的7张牌牌阵",
     cardCount: 7,
     positions: [
       {
-        name: "Root Chakra",
-        meaning: "Your foundation, security, and connection to the physical world"
+        name: "海底轮",
+        meaning: "你的根基、安全感和与物质世界的连接"
       },
       {
-        name: "Sacral Chakra",
-        meaning: "Your creativity, sexuality, and emotional expression"
+        name: "脐轮",
+        meaning: "你的创造力、性能量和情感表达"
       },
       {
-        name: "Solar Plexus Chakra",
-        meaning: "Your personal power, confidence, and sense of self"
+        name: "太阳神经丛轮",
+        meaning: "你的个人力量、自信和自我意识"
       },
       {
-        name: "Heart Chakra",
-        meaning: "Your capacity for love, compassion, and connection"
+        name: "心轮",
+        meaning: "你的爱的能力、慈悲和连接"
       },
       {
-        name: "Throat Chakra",
-        meaning: "Your communication, truth, and authentic expression"
+        name: "喉轮",
+        meaning: "你的沟通、真理和真实表达"
       },
       {
-        name: "Third Eye Chakra",
-        meaning: "Your intuition, wisdom, and spiritual insight"
+        name: "眉心轮",
+        meaning: "你的直觉、智慧和灵性洞察"
       },
       {
-        name: "Crown Chakra",
-        meaning: "Your connection to the divine and higher consciousness"
+        name: "顶轮",
+        meaning: "你与神性和更高意识的连接"
       }
     ]
   },
 
   shadow_work: {
-    name: "Shadow Work Spread",
-    description: "A 5-card spread for exploring and integrating your shadow self for personal growth",
+    name: "阴影工作牌阵",
+    description: "用于探索和整合阴影自我以促进个人成长的5张牌牌阵",
     cardCount: 5,
     positions: [
       {
-        name: "Your Shadow",
-        meaning: "The hidden or repressed aspects of yourself"
+        name: "你的阴影",
+        meaning: "你隐藏或压抑的自我面向"
       },
       {
-        name: "How It Manifests",
-        meaning: "How your shadow shows up in your life and relationships"
+        name: "如何显现",
+        meaning: "你的阴影如何在生活和关系中显现"
       },
       {
-        name: "The Gift Within",
-        meaning: "The positive potential hidden within your shadow"
+        name: "内在礼物",
+        meaning: "隐藏在阴影中的积极潜能"
       },
       {
-        name: "Integration Process",
-        meaning: "How to acknowledge and integrate this aspect of yourself"
+        name: "整合过程",
+        meaning: "如何承认和整合这个自我面向"
       },
       {
-        name: "Transformation",
-        meaning: "The growth and healing that comes from shadow work"
+        name: "转化",
+        meaning: "阴影工作带来的成长和疗愈"
       }
     ]
   },
 
   venus_love: {
-    name: "Venus Love Spread",
-    description: "A 7-card spread exploring love, relationships, self-worth, and romantic potential through the energy of Venus",
+    name: "金星爱情牌阵",
+    description: "通过金星能量探索爱情、关系、自我价值和浪漫潜力的7张牌牌阵",
     cardCount: 7,
     positions: [
       {
-        name: "Your Current Relationship Energy",
-        meaning: "Your present state in love and relationships"
+        name: "你当前的关系能量",
+        meaning: "你在爱情和关系中的当前状态"
       },
       {
-        name: "Self-Love and Self-Worth",
-        meaning: "How you value and care for yourself"
+        name: "自爱与自我价值",
+        meaning: "你如何重视和关爱自己"
       },
       {
-        name: "What Attracts Love to You",
-        meaning: "Your magnetic qualities and what draws love into your life"
+        name: "吸引爱情的因素",
+        meaning: "你的磁性品质和吸引爱情进入生活的因素"
       },
       {
-        name: "Blocks to Receiving Love",
-        meaning: "What prevents you from fully receiving and accepting love"
+        name: "接受爱情的阻碍",
+        meaning: "阻止你完全接受和接纳爱情的因素"
       },
       {
-        name: "How to Enhance Relationships",
-        meaning: "Actions to improve your current or future relationships"
+        name: "如何增进关系",
+        meaning: "改善当前或未来关系的行动"
       },
       {
-        name: "Hidden Desires of the Heart",
-        meaning: "Your deepest romantic and emotional needs"
+        name: "内心隐藏的渴望",
+        meaning: "你最深层的浪漫和情感需求"
       },
       {
-        name: "Future Potential in Love",
-        meaning: "What the future holds for your romantic life"
+        name: "爱情的未来潜力",
+        meaning: "你的浪漫生活的未来前景"
       }
     ]
   },
 
   tree_of_life: {
-    name: "Tree of Life Spread",
-    description: "A 10-card spread based on the Kabbalistic Tree of Life, providing deep spiritual insights and life guidance",
+    name: "生命之树牌阵",
+    description: "基于卡巴拉生命之树的10张牌牌阵，提供深层灵性洞察和人生指导",
     cardCount: 10,
     positions: [
       {
-        name: "Kether (Crown)",
-        meaning: "Divine will, highest purpose, and spiritual connection"
+        name: "王冠(Kether)",
+        meaning: "神圣意志、最高目的和灵性连接"
       },
       {
-        name: "Chokmah (Wisdom)",
-        meaning: "Creative force, inspiration, and dynamic energy"
+        name: "智慧(Chokmah)",
+        meaning: "创造力、灵感和动态能量"
       },
       {
-        name: "Binah (Understanding)",
-        meaning: "Form, structure, and receptive wisdom"
+        name: "理解(Binah)",
+        meaning: "形式、结构和接受性智慧"
       },
       {
-        name: "Chesed (Mercy)",
-        meaning: "Love, compassion, and expansion"
+        name: "慈悲(Chesed)",
+        meaning: "爱、慈悲和扩展"
       },
       {
-        name: "Geburah (Severity)",
-        meaning: "Strength, discipline, and necessary boundaries"
+        name: "严厉(Geburah)",
+        meaning: "力量、纪律和必要的界限"
       },
       {
-        name: "Tiphareth (Beauty)",
-        meaning: "Balance, harmony, and integration of opposites"
+        name: "美丽(Tiphareth)",
+        meaning: "平衡、和谐和对立面的整合"
       },
       {
-        name: "Netzach (Victory)",
-        meaning: "Emotions, desires, and artistic expression"
+        name: "胜利(Netzach)",
+        meaning: "情感、欲望和艺术表达"
       },
       {
-        name: "Hod (Splendor)",
-        meaning: "Intellect, communication, and analytical thinking"
+        name: "辉煌(Hod)",
+        meaning: "智力、沟通和分析思维"
       },
       {
-        name: "Yesod (Foundation)",
-        meaning: "Subconscious, dreams, and psychic impressions"
+        name: "基础(Yesod)",
+        meaning: "潜意识、梦境和心灵印象"
       },
       {
-        name: "Malkuth (Kingdom)",
-        meaning: "Physical manifestation and material world results"
+        name: "王国(Malkuth)",
+        meaning: "物质显化和物质世界的结果"
       }
     ]
   },
 
   astrological_houses: {
-    name: "Astrological Houses Spread",
-    description: "A 12-card spread representing the twelve astrological houses, providing comprehensive life insights",
+    name: "占星宫位牌阵",
+    description: "代表十二个占星宫位的12张牌牌阵，提供全面的人生洞察",
     cardCount: 12,
     positions: [
       {
-        name: "1st House - Self and Identity",
-        meaning: "Your personality, appearance, and how others see you"
+        name: "第一宫 - 自我与身份",
+        meaning: "你的个性、外表和他人对你的看法"
       },
       {
-        name: "2nd House - Values and Resources",
-        meaning: "Money, possessions, self-worth, and personal values"
+        name: "第二宫 - 价值观与资源",
+        meaning: "金钱、财产、自我价值和个人价值观"
       },
       {
-        name: "3rd House - Communication",
-        meaning: "Communication, learning, siblings, and short journeys"
+        name: "第三宫 - 沟通",
+        meaning: "沟通、学习、兄弟姐妹和短途旅行"
       },
       {
-        name: "4th House - Home and Family",
-        meaning: "Home, family, roots, and emotional foundation"
+        name: "第四宫 - 家庭与根基",
+        meaning: "家庭、家族、根源和情感基础"
       },
       {
-        name: "5th House - Creativity and Romance",
-        meaning: "Creativity, children, romance, and self-expression"
+        name: "第五宫 - 创造力与浪漫",
+        meaning: "创造力、孩子、浪漫和自我表达"
       },
       {
-        name: "6th House - Work and Health",
-        meaning: "Daily work, health, service, and routine"
+        name: "第六宫 - 工作与健康",
+        meaning: "日常工作、健康、服务和例行公事"
       },
       {
-        name: "7th House - Partnerships",
-        meaning: "Marriage, business partnerships, and open enemies"
+        name: "第七宫 - 伙伴关系",
+        meaning: "婚姻、商业伙伴关系和公开的敌人"
       },
       {
-        name: "8th House - Transformation",
-        meaning: "Shared resources, transformation, and hidden matters"
+        name: "第八宫 - 转化",
+        meaning: "共享资源、转化和隐秘事务"
       },
       {
-        name: "9th House - Philosophy",
-        meaning: "Higher learning, philosophy, travel, and spirituality"
+        name: "第九宫 - 哲学",
+        meaning: "高等教育、哲学、旅行和灵性"
       },
       {
-        name: "10th House - Career and Reputation",
-        meaning: "Career, reputation, public image, and life direction"
+        name: "第十宫 - 事业与声誉",
+        meaning: "事业、声誉、公众形象和人生方向"
       },
       {
-        name: "11th House - Friends and Aspirations",
-        meaning: "Friends, groups, hopes, and future aspirations"
+        name: "第十一宫 - 朋友与愿望",
+        meaning: "朋友、团体、希望和未来愿望"
       },
       {
-        name: "12th House - Spirituality and Hidden",
-        meaning: "Spirituality, hidden enemies, and subconscious patterns"
+        name: "第十二宫 - 灵性与隐藏",
+        meaning: "灵性、隐藏的敌人和潜意识模式"
       }
     ]
   },
 
   mandala: {
-    name: "Mandala Spread",
-    description: "A 9-card circular spread representing wholeness and the journey to self-discovery",
+    name: "曼陀罗牌阵",
+    description: "代表完整性和自我发现之旅的9张牌圆形牌阵",
     cardCount: 9,
     positions: [
       {
-        name: "Center - Core Self",
-        meaning: "Your essential nature and current spiritual center"
+        name: "中心 - 核心自我",
+        meaning: "你的本质天性和当前的灵性中心"
       },
       {
-        name: "North - Spiritual Guidance",
-        meaning: "Divine guidance and higher wisdom available to you"
+        name: "北方 - 灵性指导",
+        meaning: "可获得的神圣指导和更高智慧"
       },
       {
-        name: "Northeast - Mental Clarity",
-        meaning: "Thoughts, ideas, and mental processes that need attention"
+        name: "东北 - 心智清晰",
+        meaning: "需要关注的思想、想法和心理过程"
       },
       {
-        name: "East - New Beginnings",
-        meaning: "Fresh starts and opportunities on the horizon"
+        name: "东方 - 新的开始",
+        meaning: "即将到来的全新开始和机会"
       },
       {
-        name: "Southeast - Relationships",
-        meaning: "Your connections with others and social dynamics"
+        name: "东南 - 人际关系",
+        meaning: "你与他人的联系和社交动态"
       },
       {
-        name: "South - Passion and Creativity",
-        meaning: "Your creative fire and what energizes you"
+        name: "南方 - 激情与创造力",
+        meaning: "你的创造之火和激励你的因素"
       },
       {
-        name: "Southwest - Healing and Release",
-        meaning: "What needs to be healed or released from your life"
+        name: "西南 - 疗愈与释放",
+        meaning: "生活中需要疗愈或释放的事物"
       },
       {
-        name: "West - Intuition and Emotions",
-        meaning: "Your emotional landscape and intuitive insights"
+        name: "西方 - 直觉与情感",
+        meaning: "你的情感景观和直觉洞察"
       },
       {
-        name: "Northwest - Wisdom and Knowledge",
-        meaning: "Lessons learned and wisdom gained from experience"
+        name: "西北 - 智慧与知识",
+        meaning: "从经验中学到的课题和获得的智慧"
       }
     ]
   },
 
   pentagram: {
-    name: "Pentagram Spread",
-    description: "A 5-card spread based on the five elements, exploring balance and spiritual harmony",
+    name: "五芒星牌阵",
+    description: "基于五元素的5张牌牌阵，探索平衡与灵性和谐",
     cardCount: 5,
     positions: [
       {
-        name: "Spirit (Top)",
-        meaning: "Divine guidance and your highest spiritual purpose"
+        name: "灵(顶部)",
+        meaning: "神圣指导和你最高的灵性目的"
       },
       {
-        name: "Air (Upper Right)",
-        meaning: "Thoughts, communication, and intellectual matters"
+        name: "风(右上)",
+        meaning: "思想、沟通和智力事务"
       },
       {
-        name: "Fire (Lower Right)",
-        meaning: "Passion, action, and creative energy"
+        name: "火(右下)",
+        meaning: "激情、行动和创造能量"
       },
       {
-        name: "Earth (Lower Left)",
-        meaning: "Material world, stability, and practical concerns"
+        name: "土(左下)",
+        meaning: "物质世界、稳定性和实际关切"
       },
       {
-        name: "Water (Upper Left)",
-        meaning: "Emotions, intuition, and subconscious influences"
+        name: "水(左上)",
+        meaning: "情感、直觉和潜意识影响"
       }
     ]
   },
 
   mirror_of_truth: {
-    name: "Mirror of Truth",
-    description: "A 4-card spread designed to clarify relationship confusion through four beams of light: illuminating your perspective, exploring their intentions, revealing objective truth, and guiding future direction",
+    name: "真相之镜",
+    description: "通过四束光线澄清关系困惑的4张牌牌阵：照亮你的视角、探索他们的意图、揭示客观真相、指导未来方向",
     cardCount: 4,
     positions: [
       {
-        name: "First Light: Illuminate Yourself",
-        meaning: "Your perspective - how your emotions, inner filters, anxieties, fears, or expectations influence your understanding of the situation"
+        name: "第一束光：照亮自己",
+        meaning: "你的视角 - 你的情感、内在过滤器、焦虑、恐惧或期望如何影响你对情况的理解"
       },
       {
-        name: "Second Light: Explore Their Heart",
-        meaning: "Their intentions - looking beyond surface behavior to explore their true motivations, thoughts, and inner state"
+        name: "第二束光：探索他们的内心",
+        meaning: "他们的意图 - 超越表面行为，探索他们真正的动机、想法和内在状态"
       },
       {
-        name: "Third Light: Restore Original Truth",
-        meaning: "Objective facts - stripping away emotions and subjective judgments to present the most neutral and authentic picture of what happened"
+        name: "第三束光：恢复原始真相",
+        meaning: "客观事实 - 剥离情感和主观判断，呈现最中性和真实的事件画面"
       },
       {
-        name: "Fourth Light: Guide Future Direction",
-        meaning: "Influence and guidance - based on understanding the truth, pointing you toward the direction to move forward and actions to take"
+        name: "第四束光：指导未来方向",
+        meaning: "影响和指导 - 基于对真相的理解，为你指出前进的方向和应采取的行动"
       }
     ]
   }

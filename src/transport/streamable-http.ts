@@ -42,7 +42,7 @@ export class StreamableHTTPServer {
     const server = new McpServer({
       name: "tarot-mcp-server",
       version: "1.0.0",
-      description: "Professional Rider-Waite tarot card reading server"
+      description: "专业韦特塔罗牌占卜服务器"
     });
     
     // Setup MCP tools for this server
@@ -91,11 +91,11 @@ export class StreamableHTTPServer {
       server.registerTool(
       "get_card_info",
       {
-        title: "Get Card Info",
-        description: "Get detailed information about a specific tarot card from the Rider-Waite deck",
+        title: "获取塔罗牌信息",
+        description: "获取韦特塔罗牌组中特定塔罗牌的详细信息",
         inputSchema: {
-          cardName: z.string().describe("The name of the tarot card (e.g., 'The Fool', 'Two of Cups')"),
-          orientation: z.enum(["upright", "reversed"]).optional().default("upright").describe("The orientation of the card")
+          cardName: z.string().describe("塔罗牌的名称（例如：'愚者'、'圣杯二'）"),
+          orientation: z.enum(["upright", "reversed"]).optional().default("upright").describe("牌的方向")
         }
       },
       async (args) => {
@@ -115,8 +115,8 @@ export class StreamableHTTPServer {
       server.registerTool(
       "list_all_cards",
       {
-        title: "List All Cards",
-        description: "List all available tarot cards in the Rider-Waite deck",
+        title: "列出所有塔罗牌",
+        description: "列出韦特塔罗牌组中所有可用的塔罗牌",
         inputSchema: {
           category: z.enum(["all", "major_arcana", "minor_arcana", "wands", "cups", "swords", "pentacles"]).optional().default("all")
         }
@@ -138,12 +138,12 @@ export class StreamableHTTPServer {
       server.registerTool(
       "perform_reading",
       {
-        title: "Perform Reading",
-        description: "Perform a tarot card reading using a specific spread",
+        title: "进行塔罗占卜",
+        description: "使用特定牌阵进行塔罗牌占卜",
         inputSchema: {
           spreadType: z.enum(["single_card", "three_card", "celtic_cross", "horseshoe", "relationship_cross", "career_path", "decision_making", "spiritual_guidance", "year_ahead", "chakra_alignment", "shadow_work", "venus_love", "tree_of_life", "astrological_houses", "mandala", "pentagram", "mirror_of_truth"]),
-          question: z.string().describe("The question or focus for the reading"),
-          sessionId: z.string().optional().describe("Optional session ID to continue a previous reading")
+          question: z.string().describe("占卜的问题或关注焦点"),
+          sessionId: z.string().optional().describe("可选的会话ID，用于继续之前的占卜")
         }
       },
       async (args) => {
@@ -163,10 +163,10 @@ export class StreamableHTTPServer {
       server.registerTool(
       "search_cards",
       {
-        title: "Search Cards",
-        description: "Search for tarot cards based on keywords, themes, or meanings",
+        title: "搜索塔罗牌",
+        description: "基于关键词、主题或含义搜索塔罗牌",
         inputSchema: {
-          query: z.string().describe("Search query for card meanings, themes, or keywords"),
+          query: z.string().describe("搜索牌义、主题或关键词的查询"),
           suit: z.enum(["wands", "cups", "swords", "pentacles", "major_arcana"]).optional(),
           element: z.enum(["fire", "water", "air", "earth"]).optional(),
           limit: z.number().optional().default(10)
@@ -189,10 +189,10 @@ export class StreamableHTTPServer {
       server.registerTool(
       "find_similar_cards",
       {
-        title: "Find Similar Cards",
-        description: "Find cards with similar meanings or themes to a given card",
+        title: "查找相似塔罗牌",
+        description: "查找与指定牌含义或主题相似的塔罗牌",
         inputSchema: {
-          cardName: z.string().describe("The name of the reference card"),
+          cardName: z.string().describe("参考牌的名称"),
           limit: z.number().optional().default(5)
         }
       },
@@ -213,8 +213,8 @@ export class StreamableHTTPServer {
       server.registerTool(
       "get_database_analytics",
       {
-        title: "Get Database Analytics",
-        description: "Get analytics and statistics about the tarot card database",
+        title: "获取数据库分析",
+        description: "获取塔罗牌数据库的分析和统计信息",
         inputSchema: {}
       },
       async (args) => {
@@ -234,11 +234,11 @@ export class StreamableHTTPServer {
       server.registerTool(
       "get_random_cards",
       {
-        title: "Get Random Cards",
-        description: "Get a specified number of random tarot cards",
+        title: "获取随机塔罗牌",
+        description: "获取指定数量的随机塔罗牌",
         inputSchema: {
-          count: z.number().min(1).max(78).describe("Number of random cards to draw (1-78)"),
-          includeReversed: z.boolean().optional().default(false).describe("Whether to include reversed orientations")
+          count: z.number().min(1).max(78).describe("要抽取的随机牌数量（1-78）"),
+          includeReversed: z.boolean().optional().default(false).describe("是否包含逆位方向")
         }
       },
       async (args) => {
@@ -258,14 +258,14 @@ export class StreamableHTTPServer {
       server.registerTool(
       "create_custom_spread",
       {
-        title: "Create Custom Spread",
-        description: "Create and perform a custom tarot spread with specified positions",
+        title: "创建自定义牌阵",
+        description: "创建并执行具有指定位置的自定义塔罗牌阵",
         inputSchema: {
-          spreadName: z.string().describe("Name for the custom spread"),
-          description: z.string().describe("Description of what the spread represents"),
-          positions: z.array(z.string()).describe("Array of position names/meanings for the spread"),
-          cards: z.array(z.string()).optional().describe("Optional specific cards to use"),
-          context: z.string().optional().describe("Additional context for the reading")
+          spreadName: z.string().describe("自定义牌阵的名称"),
+          description: z.string().describe("牌阵所代表内容的描述"),
+          positions: z.array(z.string()).describe("牌阵位置名称/含义的数组"),
+          cards: z.array(z.string()).optional().describe("可选的特定牌组"),
+          context: z.string().optional().describe("占卜的额外上下文")
         }
       },
       async (args) => {
@@ -306,7 +306,7 @@ export class StreamableHTTPServer {
       res.json({
         name: 'Tarot MCP Server',
         version: '1.0.0',
-        description: 'Professional Rider-Waite tarot card reading server',
+        description: '专业韦特塔罗牌占卜服务器',
         protocol: 'Model Context Protocol',
         transport: 'Streamable HTTP',
         capabilities: ['tools'],
@@ -413,7 +413,7 @@ export class StreamableHTTPServer {
       res.json({
         message: 'Tarot MCP Server',
         version: '1.0.0',
-        description: 'Professional Rider-Waite tarot card reading server with MCP support',
+        description: '支持MCP协议的专业韦特塔罗牌占卜服务器',
         documentation: 'https://github.com/your-repo/tarot-mcp',
         endpoints: {
           mcp: '/mcp - Main MCP endpoint for client connections',

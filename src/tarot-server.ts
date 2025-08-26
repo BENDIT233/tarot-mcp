@@ -42,18 +42,18 @@ export class TarotServer {
     return [
       {
         name: "get_card_info",
-        description: "Get detailed information about a specific tarot card from the Rider-Waite deck",
+        description: "获取特定塔罗牌的详细信息，包括含义、象征和解释",
         inputSchema: {
           type: "object",
           properties: {
             cardName: {
               type: "string",
-              description: "The name of the tarot card (e.g., 'The Fool', 'Two of Cups')",
+              description: "塔罗牌的名称（例如：'愚者'、'圣杯二'）",
             },
             orientation: {
               type: "string",
               enum: ["upright", "reversed"],
-              description: "The orientation of the card (upright or reversed)",
+              description: "牌的方向（正位或逆位）",
               default: "upright",
             },
           },
@@ -62,14 +62,14 @@ export class TarotServer {
       },
       {
         name: "list_all_cards",
-        description: "List all available tarot cards in the Rider-Waite deck",
+        description: "列出所有可用的塔罗牌",
         inputSchema: {
           type: "object",
           properties: {
             category: {
               type: "string",
               enum: ["all", "major_arcana", "minor_arcana", "wands", "cups", "swords", "pentacles"],
-              description: "Filter cards by category",
+              description: "按类别筛选牌组",
               default: "all",
             },
           },
@@ -77,22 +77,22 @@ export class TarotServer {
       },
       {
         name: "perform_reading",
-        description: "Perform a tarot card reading using a specific spread",
+        description: "使用特定牌阵进行塔罗牌占卜",
         inputSchema: {
           type: "object",
           properties: {
             spreadType: {
               type: "string",
               enum: ["single_card", "three_card", "celtic_cross", "horseshoe", "relationship_cross", "career_path", "decision_making", "spiritual_guidance", "year_ahead", "chakra_alignment", "shadow_work", "venus_love", "tree_of_life", "astrological_houses", "mandala", "pentagram", "mirror_of_truth"],
-              description: "The type of tarot spread to perform",
+              description: "要使用的塔罗牌阵类型",
             },
             question: {
               type: "string",
-              description: "The question or focus for the reading",
+              description: "占卜的问题或关注焦点",
             },
             sessionId: {
               type: "string",
-              description: "Optional session ID to continue a previous reading",
+              description: "可选的会话ID，用于继续之前的占卜",
             },
           },
           required: ["spreadType", "question"],
@@ -100,58 +100,58 @@ export class TarotServer {
       },
       {
         name: "search_cards",
-        description: "Search for tarot cards using various criteria like keywords, suit, element, etc.",
+        description: "使用关键词、花色、元素等条件搜索塔罗牌",
         inputSchema: {
           type: "object",
           properties: {
             keyword: {
               type: "string",
-              description: "Search keyword to find in card meanings, keywords, or symbolism",
+              description: "在牌义、关键词或象征中搜索的关键词",
             },
             suit: {
               type: "string",
               enum: ["wands", "cups", "swords", "pentacles"],
-              description: "Filter by card suit",
+              description: "按花色筛选",
             },
             arcana: {
               type: "string",
               enum: ["major", "minor"],
-              description: "Filter by arcana type",
+              description: "按阿卡纳类型筛选",
             },
             element: {
               type: "string",
               enum: ["fire", "water", "air", "earth"],
-              description: "Filter by element",
+              description: "按元素筛选",
             },
             number: {
               type: "number",
-              description: "Filter by card number",
+              description: "按牌号筛选",
             },
             orientation: {
               type: "string",
               enum: ["upright", "reversed"],
-              description: "Search in upright or reversed meanings",
+              description: "在正位或逆位含义中搜索",
             },
             limit: {
               type: "number",
-              description: "Maximum number of results to return (default: 10)",
+              description: "返回结果的最大数量（默认：10）",
             },
           },
         },
       },
       {
         name: "find_similar_cards",
-        description: "Find cards with similar meanings to a given card",
+        description: "查找与指定牌含义相似的其他塔罗牌",
         inputSchema: {
           type: "object",
           properties: {
             cardName: {
               type: "string",
-              description: "The name of the card to find similar cards for",
+              description: "要查找相似牌的参考牌名称",
             },
             limit: {
               type: "number",
-              description: "Maximum number of similar cards to return (default: 5)",
+              description: "返回相似牌的最大数量（默认：5）",
             },
           },
           required: ["cardName"],
@@ -159,72 +159,72 @@ export class TarotServer {
       },
       {
         name: "get_database_analytics",
-        description: "Get comprehensive analytics and statistics about the tarot card database",
+        description: "获取塔罗牌数据库的综合分析和统计信息",
         inputSchema: {
           type: "object",
           properties: {
             includeRecommendations: {
               type: "boolean",
-              description: "Whether to include improvement recommendations (default: true)",
+              description: "是否包含改进建议（默认：true）",
             },
           },
         },
       },
       {
         name: "get_random_cards",
-        description: "Get random cards with optional filtering",
+        description: "随机抽取塔罗牌，支持可选筛选条件",
         inputSchema: {
           type: "object",
           properties: {
             count: {
               type: "number",
-              description: "Number of random cards to draw (default: 1)",
+              description: "要抽取的随机牌数量（默认：1）",
             },
             suit: {
               type: "string",
               enum: ["wands", "cups", "swords", "pentacles"],
-              description: "Filter by card suit",
+              description: "按花色筛选",
             },
             arcana: {
               type: "string",
               enum: ["major", "minor"],
-              description: "Filter by arcana type",
+              description: "按阿卡纳类型筛选",
             },
             element: {
               type: "string",
               enum: ["fire", "water", "air", "earth"],
-              description: "Filter by element",
+              description: "按元素筛选",
             },
           },
         },
       },
       {
         name: "create_custom_spread",
-        description: "Create a custom tarot spread and draw cards for it. Use this when no existing spread fits your needs and you want to create your own layout with specific positions and meanings.",
+        description: "创建自定义塔罗牌阵并为其抽牌。当现有牌阵不符合需求时，可以创建具有特定位置和含义的自定义布局。",
         inputSchema: {
           type: "object",
           properties: {
             spreadName: {
               type: "string",
-              description: "Name for your custom spread",
+              description: "自定义牌阵的名称",
             },
             description: {
               type: "string",
-              description: "Description of what this spread is designed to explore",
+              description: "此牌阵设计用于探索的内容描述",
             },
             positions: {
               type: "array",
-              description: "Array of position objects defining each card position in the spread",
+              description: "定义牌阵中每个牌位的位置对象数组",
               items: {
                 type: "object",
                 properties: {
                   name: {
                     type: "string",
-                    description: "Name of this position (e.g., 'Past Influences', 'Current Challenge')",
+                    description: "此位置的名称（例如：'过去影响'、'当前挑战'）",
                   },
                   meaning: {
                     type: "string",
-                    description: "What this position represents in the reading",
+                    description: "此位置在占卜中代表的含义",
                   },
                 },
                 required: ["name", "meaning"],
@@ -234,11 +234,11 @@ export class TarotServer {
             },
             question: {
               type: "string",
-              description: "The question or focus for this reading",
+              description: "此次占卜的问题或关注焦点",
             },
             sessionId: {
               type: "string",
-              description: "Optional session ID to continue a previous reading",
+              description: "可选的会话ID，用于继续之前的占卜",
             },
           },
           required: ["spreadName", "description", "positions", "question"],
@@ -337,7 +337,7 @@ export class TarotServer {
         return this.handleCreateCustomSpread(args);
 
       default:
-        throw new Error(`Unknown tool: ${toolName}`);
+        throw new Error(`未知工具：${toolName}`);
     }
   }
 
@@ -359,20 +359,20 @@ export class TarotServer {
     const limitedResults = results.slice(0, limit);
 
     if (limitedResults.length === 0) {
-      return "No cards found matching your search criteria.";
+      return "未找到符合搜索条件的牌。";
     }
 
-    let response = `Found ${results.length} cards matching your search`;
+    let response = `找到 ${results.length} 张符合搜索条件的牌`;
     if (results.length > limit) {
-      response += ` (showing top ${limit})`;
+      response += `（显示前 ${limit} 张）`;
     }
-    response += ":\n\n";
+    response += "：\n\n";
 
     for (const result of limitedResults) {
-      response += `**${result.card.name}** (Relevance: ${result.relevanceScore})\n`;
-      response += `- Suit: ${result.card.suit || 'N/A'} | Element: ${result.card.element || 'N/A'}\n`;
-      response += `- Matched fields: ${result.matchedFields.join(', ')}\n`;
-      response += `- Keywords: ${result.card.keywords.upright.slice(0, 3).join(', ')}\n\n`;
+      response += `**${result.card.name}**（相关度：${result.relevanceScore}）\n`;
+      response += `- 花色：${result.card.suit || '无'} | 元素：${result.card.element || '无'}\n`;
+      response += `- 匹配字段：${result.matchedFields.join('、')}\n`;
+      response += `- 关键词：${result.card.keywords.upright.slice(0, 3).join('、')}\n\n`;
     }
 
     return response;
@@ -391,22 +391,22 @@ export class TarotServer {
     );
 
     if (!targetCard) {
-      return `Card "${cardName}" not found. Please check the card name and try again.`;
+      return `未找到牌"${cardName}"。请检查牌名并重试。`;
     }
 
     const similarCards = this.cardSearch.findSimilarCards(targetCard.id, limit);
 
     if (similarCards.length === 0) {
-      return `No similar cards found for "${cardName}".`;
+      return `未找到与"${cardName}"相似的牌。`;
     }
 
-    let response = `Cards similar to **${targetCard.name}**:\n\n`;
+    let response = `与**${targetCard.name}**相似的牌：\n\n`;
 
     for (const card of similarCards) {
       response += `**${card.name}**\n`;
-      response += `- Suit: ${card.suit || 'N/A'} | Element: ${card.element || 'N/A'}\n`;
-      response += `- Keywords: ${card.keywords.upright.slice(0, 3).join(', ')}\n`;
-      response += `- General meaning: ${card.meanings.upright.general.substring(0, 100)}...\n\n`;
+      response += `- 花色：${card.suit || '无'} | 元素：${card.element || '无'}\n`;
+      response += `- 关键词：${card.keywords.upright.slice(0, 3).join('、')}\n`;
+      response += `- 基本含义：${card.meanings.upright.general.substring(0, 100)}...\n\n`;
     }
 
     return response;
@@ -484,19 +484,24 @@ export class TarotServer {
       element: args.element
     };
 
-    const randomCards = this.cardSearch.getRandomCards(count, options);
+    // Remove undefined values from options to avoid filtering issues
+    const cleanOptions = Object.fromEntries(
+      Object.entries(options).filter(([_, value]) => value !== undefined)
+    );
+
+    const randomCards = this.cardSearch.getRandomCards(count, Object.keys(cleanOptions).length > 0 ? cleanOptions : undefined);
 
     if (randomCards.length === 0) {
-      return "No cards found matching your criteria.";
+      return "未找到符合条件的牌。";
     }
 
-    let response = count === 1 ? "🎴 Random Card:\n\n" : `🎴 ${randomCards.length} Random Cards:\n\n`;
+    let response = count === 1 ? "🎴 随机牌：\n\n" : `🎴 ${randomCards.length} 张随机牌：\n\n`;
 
     for (const card of randomCards) {
       response += `**${card.name}**\n`;
-      response += `- Suit: ${card.suit || 'N/A'} | Element: ${card.element || 'N/A'}\n`;
-      response += `- Keywords: ${card.keywords.upright.join(', ')}\n`;
-      response += `- General meaning: ${card.meanings.upright.general}\n\n`;
+      response += `- 花色：${card.suit || '无'} | 元素：${card.element || '无'}\n`;
+      response += `- 关键词：${card.keywords.upright.join('、')}\n`;
+      response += `- 基本含义：${card.meanings.upright.general}\n\n`;
     }
 
     return response;
@@ -510,36 +515,36 @@ export class TarotServer {
 
     // Validate input
     if (!spreadName || typeof spreadName !== 'string') {
-      return "Error: spreadName is required and must be a string.";
+      return "错误：牌阵名称是必需的，且必须是字符串。";
     }
 
     if (!description || typeof description !== 'string') {
-      return "Error: description is required and must be a string.";
+      return "错误：牌阵描述是必需的，且必须是字符串。";
     }
 
     if (!Array.isArray(positions) || positions.length === 0) {
-      return "Error: positions must be a non-empty array.";
+      return "错误：位置必须是非空数组。";
     }
 
     if (positions.length > 15) {
-      return "Error: Maximum 15 positions allowed for a custom spread.";
+      return "错误：自定义牌阵最多允许15个位置。";
     }
 
     if (!question || typeof question !== 'string') {
-      return "Error: question is required and must be a string.";
+      return "错误：问题是必需的，且必须是字符串。";
     }
 
     // Validate each position
     for (let i = 0; i < positions.length; i++) {
       const position = positions[i];
       if (!position || typeof position !== 'object') {
-        return `Error: Position ${i + 1} must be an object with 'name' and 'meaning' properties.`;
+        return `错误：位置 ${i + 1} 必须是包含'name'和'meaning'属性的对象。`;
       }
       if (!position.name || typeof position.name !== 'string') {
-        return `Error: Position ${i + 1} must have a 'name' property that is a string.`;
+        return `错误：位置 ${i + 1} 必须有一个字符串类型的'name'属性。`;
       }
       if (!position.meaning || typeof position.meaning !== 'string') {
-        return `Error: Position ${i + 1} must have a 'meaning' property that is a string.`;
+        return `错误：位置 ${i + 1} 必须有一个字符串类型的'meaning'属性。`;
       }
     }
 
@@ -552,7 +557,7 @@ export class TarotServer {
         sessionId
       );
     } catch (error) {
-      return `Error creating custom spread: ${error instanceof Error ? error.message : String(error)}`;
+      return `创建自定义牌阵时出错：${error instanceof Error ? error.message : String(error)}`;
     }
   }
 }

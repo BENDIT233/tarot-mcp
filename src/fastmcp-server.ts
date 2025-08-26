@@ -20,7 +20,7 @@ export class TarotFastMCPServer {
       {
         name: "tarot-mcp-server",
         version: "1.0.0",
-        description: "Professional Rider-Waite tarot card reading server"
+        description: "专业韦特塔罗牌占卜服务器"
       },
       {
         capabilities: {
@@ -42,11 +42,11 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "get_card_info",
       {
-        title: "Get Card Information",
-        description: "Get detailed information about a specific tarot card including meanings, symbolism, and interpretations",
+        title: "获取塔罗牌信息",
+        description: "获取特定塔罗牌的详细信息，包括含义、象征和解释",
         inputSchema: {
-          cardName: z.string().describe("Name of the tarot card"),
-          orientation: z.enum(["upright", "reversed"]).optional().describe("Card orientation (upright or reversed)")
+          cardName: z.string().describe("塔罗牌的名称"),
+          orientation: z.enum(["upright", "reversed"]).optional().describe("牌的方向（正位或逆位）")
         }
       },
       async ({ cardName, orientation }) => {
@@ -64,10 +64,10 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "list_all_cards",
       {
-        title: "List All Cards",
-        description: "Get a list of all available tarot cards with basic information",
+        title: "列出所有塔罗牌",
+        description: "列出所有可用的塔罗牌及其基本信息",
         inputSchema: {
-          category: z.enum(["major", "minor", "all"]).optional().describe("Filter by card category")
+          category: z.enum(["major", "minor", "all"]).optional().describe("按类别筛选牌组")
         }
       },
       async ({ category }) => {
@@ -85,12 +85,12 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "perform_reading",
       {
-        title: "Perform Tarot Reading",
-        description: "Perform a complete tarot reading with card selection and interpretation",
+        title: "进行塔罗占卜",
+        description: "使用特定牌阵进行完整的塔罗牌占卜，包括抽牌和解读",
         inputSchema: {
-          spreadType: z.string().describe("Type of spread (e.g., 'single', 'three-card', 'celtic-cross')"),
-          question: z.string().optional().describe("Question or focus for the reading"),
-          sessionId: z.string().optional().describe("Session ID for tracking")
+          spreadType: z.string().describe("要使用的塔罗牌阵类型（例如：'single'、'three-card'、'celtic-cross'）"),
+          question: z.string().optional().describe("占卜的问题或关注焦点"),
+          sessionId: z.string().optional().describe("用于跟踪的会话ID")
         }
       },
       async ({ spreadType, question, sessionId }) => {
@@ -108,13 +108,13 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "search_cards",
       {
-        title: "Search Cards",
-        description: "Search for tarot cards based on keywords, themes, or meanings",
+        title: "搜索塔罗牌",
+        description: "使用关键词、主题或含义搜索塔罗牌",
         inputSchema: {
-          query: z.string().describe("Search query or keywords"),
-          suit: z.string().optional().describe("Filter by suit (for minor arcana)"),
-          element: z.string().optional().describe("Filter by element"),
-          limit: z.number().optional().describe("Maximum number of results")
+          query: z.string().describe("搜索查询或关键词"),
+          suit: z.string().optional().describe("按花色筛选（小阿卡纳）"),
+          element: z.string().optional().describe("按元素筛选"),
+          limit: z.number().optional().describe("返回结果的最大数量")
         }
       },
       async ({ query, suit, element, limit }) => {
@@ -132,11 +132,11 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "find_similar_cards",
       {
-        title: "Find Similar Cards",
-        description: "Find cards with similar meanings or themes to a given card",
+        title: "查找相似塔罗牌",
+        description: "查找与指定牌含义或主题相似的其他塔罗牌",
         inputSchema: {
-          cardName: z.string().describe("Reference card name"),
-          limit: z.number().optional().describe("Maximum number of similar cards to return")
+          cardName: z.string().describe("参考牌的名称"),
+          limit: z.number().optional().describe("返回相似牌的最大数量")
         }
       },
       async ({ cardName, limit }) => {
@@ -154,8 +154,8 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "get_database_analytics",
       {
-        title: "Get Database Analytics",
-        description: "Get analytics and statistics about the tarot card database",
+        title: "获取数据库分析",
+        description: "获取塔罗牌数据库的分析和统计信息",
         inputSchema: {}
       },
       async () => {
@@ -173,11 +173,11 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "get_random_cards",
       {
-        title: "Get Random Cards",
-        description: "Get a specified number of random tarot cards",
+        title: "获取随机塔罗牌",
+        description: "获取指定数量的随机塔罗牌",
         inputSchema: {
-          count: z.number().describe("Number of random cards to return"),
-          includeReversed: z.boolean().optional().describe("Whether to include reversed orientations")
+          count: z.number().describe("要返回的随机牌数量"),
+          includeReversed: z.boolean().optional().describe("是否包含逆位方向")
         }
       },
       async ({ count, includeReversed }) => {
@@ -195,14 +195,14 @@ export class TarotFastMCPServer {
     this.mcp.registerTool(
       "create_custom_spread",
       {
-        title: "Create Custom Spread",
-        description: "Create and perform a custom tarot spread with specified positions",
+        title: "创建自定义牌阵",
+        description: "创建并执行具有指定位置的自定义塔罗牌阵",
         inputSchema: {
-          spreadName: z.string().describe("Name for the custom spread"),
-          description: z.string().describe("Description of the spread's purpose"),
-          positions: z.array(z.string()).describe("Array of position names/meanings"),
-          cards: z.array(z.string()).optional().describe("Specific cards to use (optional)"),
-          context: z.string().optional().describe("Additional context for interpretation")
+          spreadName: z.string().describe("自定义牌阵的名称"),
+          description: z.string().describe("牌阵用途的描述"),
+          positions: z.array(z.string()).describe("位置名称/含义的数组"),
+          cards: z.array(z.string()).optional().describe("要使用的特定牌（可选）"),
+          context: z.string().optional().describe("解读的额外上下文")
         }
       },
       async ({ spreadName, description, positions, cards, context }) => {
@@ -249,14 +249,14 @@ export class TarotFastMCPServer {
    */
   getAvailableTools() {
     return [
-      { name: 'get_card_info', description: 'Get detailed information about a specific tarot card' },
-      { name: 'list_all_cards', description: 'Get a list of all available tarot cards' },
-      { name: 'perform_reading', description: 'Perform a complete tarot reading' },
-      { name: 'search_cards', description: 'Search for tarot cards based on keywords' },
-      { name: 'find_similar_cards', description: 'Find cards with similar meanings' },
-      { name: 'get_database_analytics', description: 'Get analytics about the tarot database' },
-      { name: 'get_random_cards', description: 'Get random tarot cards' },
-      { name: 'create_custom_spread', description: 'Create and perform custom tarot spreads' }
+      { name: 'get_card_info', description: '获取特定塔罗牌的详细信息' },
+      { name: 'list_all_cards', description: '列出所有可用的塔罗牌' },
+      { name: 'perform_reading', description: '使用特定牌阵进行塔罗牌占卜' },
+      { name: 'search_cards', description: '基于关键词、主题或含义搜索塔罗牌' },
+      { name: 'find_similar_cards', description: '查找与指定牌含义或主题相似的塔罗牌' },
+      { name: 'get_database_analytics', description: '获取塔罗牌数据库的分析和统计信息' },
+      { name: 'get_random_cards', description: '获取指定数量的随机塔罗牌' },
+      { name: 'create_custom_spread', description: '创建并执行具有指定位置的自定义塔罗牌阵' }
     ];
   }
 }

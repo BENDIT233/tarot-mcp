@@ -7,7 +7,7 @@ import { getSecureRandom } from './utils.js';
 // Helper to get __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const CARD_DATA_PATH = path.join(__dirname, 'card-data.json');
+const CARD_DATA_PATH = path.join(__dirname, 'card-data-cn.json');
 
 /**
  * Manages tarot card data and operations.
@@ -41,13 +41,13 @@ export class TarotCardManager {
       const data = await fs.readFile(CARD_DATA_PATH, 'utf-8');
       const { cards } = JSON.parse(data);
       if (!Array.isArray(cards)) {
-        throw new Error('Card data is not in the expected format ({"cards": [...]})');
+        throw new Error('卡牌数据格式不正确（应为 {"cards": [...]}）');
       }
       TarotCardManager.instance = new TarotCardManager(cards as TarotCard[]);
       return TarotCardManager.instance;
     } catch (error) {
-      console.error('Failed to load or parse tarot card data:', error);
-      throw new Error('Could not initialize TarotCardManager. Card data is missing or corrupt.');
+      console.error('加载或解析塔罗牌数据失败：', error);
+      throw new Error('无法初始化 TarotCardManager。卡牌数据缺失或损坏。');
     }
   }
 
@@ -68,7 +68,7 @@ export class TarotCardManager {
   public getCardInfo(cardName: string, orientation: CardOrientation = "upright"): string {
     const card = this.findCard(cardName);
     if (!card) {
-      return `Card "${cardName}" not found. Use the list_all_cards tool to see available cards.`;
+      return `未找到塔罗牌 "${cardName}"。请使用 list_all_cards 工具查看可用的塔罗牌。`;
     }
 
     const meanings = orientation === "upright" ? card.meanings.upright : card.meanings.reversed;
@@ -179,8 +179,8 @@ export class TarotCardManager {
       });
     }
 
-    result += `\n**Total cards:** ${filteredCards.length}\n`;
-    result += `\nUse the \`get_card_info\` tool with any card name to get detailed information.`;
+    result += `\n**总牌数:** ${filteredCards.length}\n`;
+    result += `\n使用 \`get_card_info\` 工具配合任意牌名来获取详细信息。`;
 
     return result;
   }
@@ -230,7 +230,7 @@ export class TarotCardManager {
    */
   public getRandomCards(count: number): TarotCard[] {
     if (count > this.allCards.length) {
-      throw new Error(`Cannot draw ${count} cards from a deck of ${this.allCards.length} cards`);
+      throw new Error(`无法从 ${this.allCards.length} 张牌的牌组中抽取 ${count} 张牌`);
     }
     if (count === this.allCards.length) {
       return this.fisherYatesShuffle(this.allCards);

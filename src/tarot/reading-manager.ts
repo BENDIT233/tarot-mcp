@@ -21,7 +21,7 @@ export class TarotReadingManager {
    */
   public performReading(spreadType: string, question: string, sessionId?: string): string {
     if (!isValidSpreadType(spreadType)) {
-      return `Invalid spread type: ${spreadType}. Use list_available_spreads to see valid options.`;
+      return `无效的牌阵类型：${spreadType}。请使用 list_available_spreads 查看有效选项。`;
     }
 
     const spread = getSpread(spreadType)!;
@@ -62,20 +62,20 @@ export class TarotReadingManager {
   public listAvailableSpreads(): string {
     const spreads = getAllSpreads();
     
-    let result = "# Available Tarot Spreads\n\n";
+    let result = "# 可用的塔罗牌阵\n\n";
     
     spreads.forEach(spread => {
-      result += `## ${spread.name} (${spread.cardCount} cards)\n\n`;
+      result += `## ${spread.name} (${spread.cardCount} 张牌)\n\n`;
       result += `${spread.description}\n\n`;
       
-      result += "**Positions:**\n";
+      result += "**位置：**\n";
       spread.positions.forEach((position, index) => {
         result += `${index + 1}. **${position.name}**: ${position.meaning}\n`;
       });
       result += "\n";
     });
 
-    result += "Use the `perform_reading` tool with one of these spread types to get a reading.";
+    result += "使用 `perform_reading` 工具和其中一种牌阵类型来获取占卜。";
 
     return result;
   }
@@ -137,7 +137,7 @@ export class TarotReadingManager {
     for (const cardInput of cards) {
       const card = this.cardManager.findCard(cardInput.name);
       if (!card) {
-        return `Card "${cardInput.name}" not found. Use list_all_cards to see available cards.`;
+        return `未找到牌"${cardInput.name}"。请使用 list_all_cards 查看可用的牌。`;
       }
       
       drawnCards.push({
@@ -146,19 +146,19 @@ export class TarotReadingManager {
       });
     }
 
-    let result = `# Card Combination Interpretation\n\n`;
-    result += `**Context:** ${context}\n\n`;
+    let result = `# 牌组合解读\n\n`;
+    result += `**背景：** ${context}\n\n`;
     
-    result += `## Cards in This Reading\n\n`;
+    result += `## 本次占卜中的牌\n\n`;
     drawnCards.forEach((drawnCard, index) => {
-      result += `${index + 1}. **${drawnCard.card.name}** (${drawnCard.orientation})\n`;
+      result += `${index + 1}. **${drawnCard.card.name}** (${drawnCard.orientation === "upright" ? "正位" : "逆位"})\n`;
       const keywords = drawnCard.orientation === "upright" 
         ? drawnCard.card.keywords.upright 
         : drawnCard.card.keywords.reversed;
-      result += `   *Keywords: ${keywords.join(", ")}*\n\n`;
+      result += `   *关键词: ${keywords.join("、")}*\n\n`;
     });
 
-    result += `## Interpretation\n\n`;
+    result += `## 解读\n\n`;
     result += this.generateCombinationInterpretation(drawnCards, context);
 
     return result;
@@ -168,7 +168,7 @@ export class TarotReadingManager {
    * Generate interpretation for a reading
    */
   private generateInterpretation(drawnCards: DrawnCard[], question: string, spreadName: string): string {
-    let interpretation = `This ${spreadName} reading addresses your question: "${question}"\n\n`;
+    let interpretation = `这个${spreadName}占卜回答你的问题："${question}"\n\n`;
 
     // Individual card interpretations with context
     drawnCards.forEach((drawnCard, index) => {
@@ -176,7 +176,7 @@ export class TarotReadingManager {
         ? drawnCard.card.meanings.upright
         : drawnCard.card.meanings.reversed;
 
-      interpretation += `**${drawnCard.position}**: ${drawnCard.card.name} (${drawnCard.orientation})\n`;
+      interpretation += `**${drawnCard.position}**: ${drawnCard.card.name} (${drawnCard.orientation === "upright" ? "正位" : "逆位"})\n`;
 
       // Choose the most relevant meaning based on position
       const relevantMeaning = this.selectRelevantMeaning(meanings, drawnCard.position || "General", question);
@@ -184,31 +184,32 @@ export class TarotReadingManager {
     });
 
     // Add spread-specific analysis
-    if (spreadName.toLowerCase().includes("celtic cross")) {
+    const spreadNameLower = spreadName.toLowerCase();
+    if (spreadNameLower.includes("celtic cross") || spreadNameLower.includes("凯尔特十字")) {
       interpretation += this.generateCelticCrossAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("three card")) {
+    } else if (spreadNameLower.includes("three card") || spreadNameLower.includes("三张牌")) {
       interpretation += this.generateThreeCardAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("relationship")) {
+    } else if (spreadNameLower.includes("relationship") || spreadNameLower.includes("关系")) {
       interpretation += this.generateRelationshipAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("career")) {
+    } else if (spreadNameLower.includes("career") || spreadNameLower.includes("职业") || spreadNameLower.includes("事业")) {
       interpretation += this.generateCareerAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("spiritual")) {
+    } else if (spreadNameLower.includes("spiritual") || spreadNameLower.includes("灵性")) {
       interpretation += this.generateSpiritualAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("chakra")) {
+    } else if (spreadNameLower.includes("chakra") || spreadNameLower.includes("脉轮")) {
       interpretation += this.generateChakraAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("year ahead")) {
+    } else if (spreadNameLower.includes("year ahead") || spreadNameLower.includes("年度展望")) {
       interpretation += this.generateYearAheadAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("venus") || spreadName.toLowerCase().includes("love")) {
+    } else if (spreadNameLower.includes("venus") || spreadNameLower.includes("love") || spreadNameLower.includes("金星") || spreadNameLower.includes("爱情")) {
       interpretation += this.generateVenusLoveAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("tree of life")) {
+    } else if (spreadNameLower.includes("tree of life") || spreadNameLower.includes("生命之树")) {
       interpretation += this.generateTreeOfLifeAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("astrological")) {
+    } else if (spreadNameLower.includes("astrological") || spreadNameLower.includes("占星")) {
       interpretation += this.generateAstrologicalAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("mandala")) {
+    } else if (spreadNameLower.includes("mandala") || spreadNameLower.includes("曼陀罗")) {
       interpretation += this.generateMandalaAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("pentagram")) {
+    } else if (spreadNameLower.includes("pentagram") || spreadNameLower.includes("五芒星")) {
       interpretation += this.generatePentagramAnalysis(drawnCards);
-    } else if (spreadName.toLowerCase().includes("mirror of truth")) {
+    } else if (spreadNameLower.includes("mirror of truth") || spreadNameLower.includes("真相之镜")) {
       interpretation += this.generateMirrorOfTruthAnalysis(drawnCards);
     }
 
@@ -226,20 +227,26 @@ export class TarotReadingManager {
     const positionLower = position.toLowerCase();
 
     // Determine the most relevant aspect based on question content
-    if (questionLower.includes("love") || questionLower.includes("relationship") || questionLower.includes("romance")) {
+    if (questionLower.includes("love") || questionLower.includes("relationship") || questionLower.includes("romance") || 
+        questionLower.includes("爱情") || questionLower.includes("感情") || questionLower.includes("恋爱") || questionLower.includes("关系")) {
       return meanings.love;
-    } else if (questionLower.includes("career") || questionLower.includes("job") || questionLower.includes("work") || questionLower.includes("money")) {
+    } else if (questionLower.includes("career") || questionLower.includes("job") || questionLower.includes("work") || questionLower.includes("money") ||
+               questionLower.includes("职业") || questionLower.includes("工作") || questionLower.includes("事业") || questionLower.includes("金钱") || questionLower.includes("财富")) {
       return meanings.career;
-    } else if (questionLower.includes("health") || questionLower.includes("wellness") || questionLower.includes("body")) {
+    } else if (questionLower.includes("health") || questionLower.includes("wellness") || questionLower.includes("body") ||
+               questionLower.includes("健康") || questionLower.includes("身体") || questionLower.includes("养生")) {
       return meanings.health;
-    } else if (questionLower.includes("spiritual") || questionLower.includes("purpose") || questionLower.includes("meaning")) {
+    } else if (questionLower.includes("spiritual") || questionLower.includes("purpose") || questionLower.includes("meaning") ||
+               questionLower.includes("灵性") || questionLower.includes("精神") || questionLower.includes("目的") || questionLower.includes("意义")) {
       return meanings.spirituality;
     }
 
     // Default to general meaning, but consider position context
-    if (positionLower.includes("love") || positionLower.includes("relationship")) {
+    if (positionLower.includes("love") || positionLower.includes("relationship") || 
+        positionLower.includes("爱情") || positionLower.includes("感情") || positionLower.includes("关系")) {
       return meanings.love;
-    } else if (positionLower.includes("career") || positionLower.includes("work")) {
+    } else if (positionLower.includes("career") || positionLower.includes("work") ||
+               positionLower.includes("职业") || positionLower.includes("工作") || positionLower.includes("事业")) {
       return meanings.career;
     }
 
@@ -838,7 +845,7 @@ export class TarotReadingManager {
    * Generate overall interpretation considering card interactions
    */
   private generateOverallInterpretation(drawnCards: DrawnCard[], question: string): string {
-    let overall = "**Overall Interpretation:**\n\n";
+    let overall = "**整体解读：**\n\n";
 
     // Analyze the energy of the reading
     const uprightCount = drawnCards.filter(c => c.orientation === "upright").length;
@@ -848,25 +855,25 @@ export class TarotReadingManager {
 
     // Major Arcana influence analysis
     if (majorArcanaCount > totalCards / 2) {
-      overall += "This reading is heavily influenced by Major Arcana cards, indicating that significant spiritual forces, life lessons, and karmic influences are at work. The universe is guiding you through important transformations. ";
+      overall += "这次占卜受到大阿卡纳牌的强烈影响，表明重要的灵性力量、人生课题和业力影响正在发挥作用。宇宙正在引导你经历重要的转变。";
     } else if (majorArcanaCount === 0) {
-      overall += "This reading contains only Minor Arcana cards, suggesting that the situation is primarily within your control and relates to everyday matters and practical concerns. ";
+      overall += "这次占卜只包含小阿卡纳牌，表明情况主要在你的掌控之中，与日常事务和实际关切相关。";
     } else {
-      overall += "The balance of Major and Minor Arcana cards suggests a blend of spiritual guidance and practical action is needed. ";
+      overall += "大阿卡纳和小阿卡纳牌的平衡表明需要将灵性指导与实际行动相结合。";
     }
 
     // Orientation analysis
     const uprightPercentage = (uprightCount / totalCards) * 100;
     if (uprightPercentage >= 80) {
-      overall += "The predominance of upright cards indicates positive energy, clear direction, and favorable circumstances. You're aligned with the natural flow of events. ";
+      overall += "正位牌的主导地位表明积极的能量、清晰的方向和有利的环境。你与事件的自然流动保持一致。";
     } else if (uprightPercentage >= 60) {
-      overall += "Most cards are upright, suggesting generally positive energy with some areas requiring attention or inner work. ";
+      overall += "大多数牌都是正位，表明总体上是积极的能量，但有些领域需要关注或内在工作。";
     } else if (uprightPercentage >= 40) {
-      overall += "The balance of upright and reversed cards indicates a mixed situation with both opportunities and challenges present. ";
+      overall += "正位和逆位牌的平衡表明这是一个复杂的情况，既有机会也有挑战。";
     } else if (uprightPercentage >= 20) {
-      overall += "The majority of reversed cards suggests internal blocks, delays, or the need for significant introspection and inner work. ";
+      overall += "大多数逆位牌表明内在阻碍、延迟，或需要进行重要的内省和内在工作。";
     } else {
-      overall += "The predominance of reversed cards indicates a time of deep inner transformation, spiritual crisis, or significant obstacles that require patience and self-reflection. ";
+      overall += "逆位牌的主导地位表明这是一个深度内在转变、灵性危机或重大障碍的时期，需要耐心和自我反思。";
     }
 
     // Add specific guidance based on card combinations and spread type
@@ -901,7 +908,7 @@ export class TarotReadingManager {
     const archetypeAnalysis = this.analyzeMajorArcanaPatterns(drawnCards);
     interpretation += archetypeAnalysis;
 
-    interpretation += "\n\nTrust your intuition as you reflect on these insights and how they apply to your specific situation.";
+    interpretation += "\n\n在反思这些洞察以及它们如何适用于你的具体情况时，请相信你的直觉。";
 
     return interpretation;
   }
@@ -935,16 +942,16 @@ export class TarotReadingManager {
     if (dominantElement[1] > total / 2) {
       switch (dominantElement[0]) {
         case "fire":
-          interpretation += "The dominance of Fire energy suggests this is a time for action, creativity, and passionate pursuit of your goals. ";
+          interpretation += "火元素的主导地位表明这是一个需要行动、创造力和热情追求目标的时期。";
           break;
         case "water":
-          interpretation += "The prevalence of Water energy indicates this situation is deeply emotional and intuitive, requiring you to trust your feelings. ";
+          interpretation += "水元素的盛行表明这种情况深具情感性和直觉性，需要你相信自己的感受。";
           break;
         case "air":
-          interpretation += "The abundance of Air energy suggests this is primarily a mental matter requiring clear thinking, communication, and intellectual approach. ";
+          interpretation += "风元素的丰富表明这主要是一个心理问题，需要清晰的思考、沟通和理性的方法。";
           break;
         case "earth":
-          interpretation += "The strong Earth energy indicates this situation requires practical action, patience, and attention to material concerns. ";
+          interpretation += "土元素的强势表明这种情况需要实际行动、耐心和对物质关切的关注。";
           break;
       }
     }
@@ -955,7 +962,7 @@ export class TarotReadingManager {
       .map(([element]) => element);
 
     if (missingElements.length > 0) {
-      interpretation += `The absence of ${missingElements.join(" and ")} energy suggests you may need to cultivate these qualities to achieve balance. `;
+      interpretation += `缺乏${missingElements.join("和")}元素能量表明你可能需要培养这些品质来实现平衡。`;
     }
 
     return interpretation;
@@ -982,16 +989,16 @@ export class TarotReadingManager {
     let interpretation = "";
     switch (dominantSuit[0]) {
       case "wands":
-        interpretation += "The multiple Wands indicate this situation involves creative projects, career ambitions, and the need for decisive action. ";
+        interpretation += "多张权杖牌表明这种情况涉及创意项目、事业雄心和需要果断行动。";
         break;
       case "cups":
-        interpretation += "The presence of multiple Cups shows this is fundamentally about emotions, relationships, and spiritual matters. ";
+        interpretation += "多张圣杯牌的出现表明这根本上关于情感、关系和精神事务。";
         break;
       case "swords":
-        interpretation += "The dominance of Swords reveals this situation involves mental challenges, conflicts, and the need for clear communication. ";
+        interpretation += "宝剑牌的主导地位揭示了这种情况涉及心理挑战、冲突和需要清晰沟通。";
         break;
       case "pentacles":
-        interpretation += "Multiple Pentacles emphasize material concerns, financial matters, and the need for practical, grounded action. ";
+        interpretation += "多张星币牌强调物质关切、财务事务和需要实际、脚踏实地的行动。";
         break;
     }
 
@@ -1013,13 +1020,13 @@ export class TarotReadingManager {
 
     // Analyze the journey stage
     if (avgNumber <= 3) {
-      interpretation += "The low-numbered cards indicate this situation is in its beginning stages, full of potential and new energy. ";
+      interpretation += "低数字牌表明这种情况处于初始阶段，充满潜力和新能量。";
     } else if (avgNumber <= 6) {
-      interpretation += "The mid-range numbers suggest this situation is in its development phase, requiring steady progress and patience. ";
+      interpretation += "中等数字表明这种情况处于发展阶段，需要稳步进展和耐心。";
     } else if (avgNumber <= 9) {
-      interpretation += "The higher numbers indicate this situation is approaching completion or mastery, requiring final efforts. ";
+      interpretation += "较高的数字表明这种情况正在接近完成或掌握，需要最后的努力。";
     } else {
-      interpretation += "The presence of high numbers and court cards suggests mastery, completion, or the involvement of significant people. ";
+      interpretation += "高数字和宫廷牌的出现表明掌握、完成或重要人物的参与。";
     }
 
     // Look for repeated numbers
@@ -1033,22 +1040,22 @@ export class TarotReadingManager {
       .map(([num]) => parseInt(num));
 
     if (repeatedNumbers.length > 0) {
-      interpretation += `The repetition of ${repeatedNumbers.join(" and ")} emphasizes the themes of `;
+      interpretation += `数字${repeatedNumbers.join("和")}的重复强调了以下主题：`;
       repeatedNumbers.forEach(num => {
         switch (num) {
-          case 1: interpretation += "new beginnings and potential, "; break;
-          case 2: interpretation += "balance and partnerships, "; break;
-          case 3: interpretation += "creativity and growth, "; break;
-          case 4: interpretation += "stability and foundation, "; break;
-          case 5: interpretation += "change and challenge, "; break;
-          case 6: interpretation += "harmony and responsibility, "; break;
-          case 7: interpretation += "spiritual development and introspection, "; break;
-          case 8: interpretation += "material mastery and achievement, "; break;
-          case 9: interpretation += "completion and wisdom, "; break;
-          case 10: interpretation += "fulfillment and new cycles, "; break;
+          case 1: interpretation += "新开始和潜力，"; break;
+          case 2: interpretation += "平衡和伙伴关系，"; break;
+          case 3: interpretation += "创造力和成长，"; break;
+          case 4: interpretation += "稳定和基础，"; break;
+          case 5: interpretation += "变化和挑战，"; break;
+          case 6: interpretation += "和谐和责任，"; break;
+          case 7: interpretation += "精神发展和内省，"; break;
+          case 8: interpretation += "物质掌握和成就，"; break;
+          case 9: interpretation += "完成和智慧，"; break;
+          case 10: interpretation += "满足和新循环，"; break;
         }
       });
-      interpretation = interpretation.slice(0, -2) + ". ";
+      interpretation = interpretation.slice(0, -1) + "。";
     }
 
     return interpretation;
@@ -1069,9 +1076,9 @@ export class TarotReadingManager {
 
     let interpretation = "";
     if (courtCards.length === 1) {
-      interpretation += "The presence of a court card suggests that a specific person or personality aspect is significant to this situation. ";
+      interpretation += "宫廷牌的出现表明特定的人或人格方面对这种情况很重要。";
     } else {
-      interpretation += `The ${courtCards.length} court cards indicate that multiple people or personality aspects are influencing this situation. `;
+      interpretation += `${courtCards.length}张宫廷牌表明多个人或人格方面正在影响这种情况。`;
     }
 
     return interpretation;
@@ -1094,9 +1101,9 @@ export class TarotReadingManager {
     if (majorNumbers.length > 1) {
       const span = majorNumbers[majorNumbers.length - 1] - majorNumbers[0];
       if (span > 10) {
-        interpretation += "The wide span of Major Arcana cards suggests you're experiencing a significant life transformation that touches many aspects of your spiritual journey. ";
+        interpretation += "大阿卡纳牌的广泛跨度表明你正在经历一个重大的生命转变，触及你精神旅程的许多方面。";
       } else if (span < 5) {
-        interpretation += "The close grouping of Major Arcana cards indicates you're working through a specific phase of spiritual development. ";
+        interpretation += "大阿卡纳牌的紧密分组表明你正在经历精神发展的特定阶段。";
       }
     }
 
@@ -1104,11 +1111,11 @@ export class TarotReadingManager {
     const cardNames = majorCards.map(c => c.card.name.toLowerCase());
 
     if (cardNames.includes("the fool") && cardNames.includes("the magician")) {
-      interpretation += "The presence of both The Fool and The Magician suggests a powerful combination of new beginnings and the ability to manifest your desires. ";
+      interpretation += "愚者和魔术师的同时出现表明新开始和实现愿望能力的强大结合。";
     }
 
     if (cardNames.includes("the high priestess") && cardNames.includes("the hierophant")) {
-      interpretation += "The High Priestess and Hierophant together indicate a balance between inner wisdom and traditional teachings. ";
+      interpretation += "女祭司和教皇一起出现表明内在智慧和传统教导之间的平衡。";
     }
 
     return interpretation;

@@ -33,7 +33,7 @@ function parseArgs(): {
         if (['stdio', 'http', 'streamable', 'fastmcp'].includes(transportValue)) {
           transport = transportValue as 'stdio' | 'http' | 'streamable' | 'fastmcp';
         } else {
-          console.error(`Invalid transport: ${transportValue}. Use 'stdio', 'http', 'streamable', or 'fastmcp'.`);
+          console.error(`无效的传输方式：${transportValue}。请使用 'stdio'、'http'、'streamable' 或 'fastmcp'。`);
           process.exit(1);
         }
         break;
@@ -41,7 +41,7 @@ function parseArgs(): {
       case '-p':
         const portValue = parseInt(args[++i], 10);
         if (isNaN(portValue) || portValue < 1 || portValue > 65535) {
-          console.error(`Invalid port: ${args[i]}. Use a number between 1 and 65535.`);
+          console.error(`无效的端口：${args[i]}。请使用 1 到 65535 之间的数字。`);
           process.exit(1);
         }
         port = portValue;
@@ -51,7 +51,7 @@ function parseArgs(): {
         help = true;
         break;
       default:
-        console.error(`Unknown argument: ${arg}`);
+        console.error(`未知参数：${arg}`);
         process.exit(1);
     }
   }
@@ -133,11 +133,11 @@ async function main(): Promise<void> {
         break;
         
       default:
-        console.error(`Unsupported transport: ${transport}`);
+        console.error(`不支持的传输方式：${transport}`);
         process.exit(1);
     }
   } catch (error) {
-    console.error('Failed to start server:', error);
+    console.error('启动服务器失败：', error);
     process.exit(1);
   }
 }
@@ -185,7 +185,7 @@ async function startStdioServer(tarotServer: TarotServer) {
         content: [
           {
             type: "text",
-            text: `Error executing tool ${name}: ${error instanceof Error ? error.message : String(error)}`,
+            text: `执行工具 ${name} 时出错：${error instanceof Error ? error.message : String(error)}`,
           },
         ],
       };
@@ -195,12 +195,12 @@ async function startStdioServer(tarotServer: TarotServer) {
   const transport = new StdioServerTransport();
   await server.connect(transport);
 
-  console.error("Tarot MCP Server running on stdio");
+  console.error("塔罗牌 MCP 服务器正在 stdio 上运行");
 }
 
 // Handle graceful shutdown
 process.on("SIGINT", async () => {
-  console.error("Shutting down Tarot MCP Server...");
+  console.error("正在关闭塔罗牌 MCP 服务器...");
   process.exit(0);
 });
 
@@ -211,6 +211,6 @@ process.on("SIGTERM", async () => {
 
 // Start the server
 main().catch((error) => {
-  console.error("Fatal error in main():", error);
+  console.error("main() 中的致命错误：", error);
   process.exit(1);
 });
