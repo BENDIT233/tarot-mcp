@@ -28,8 +28,8 @@ USER tarot
 EXPOSE 3000
 
 # Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
+HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
+  CMD node -e "require('http').get({hostname: '127.0.0.1', port: 3000, path: '/health'}, (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
 
-# Default command - run HTTP server with SSE support
-CMD ["node", "dist/index.js", "--transport", "sse", "--port", "3000"]
+# Default command - run HTTP server with streamable support
+CMD ["node", "dist/index.js", "--transport", "streamable", "--port", "3000"]

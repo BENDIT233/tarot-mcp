@@ -16,7 +16,7 @@
     "lint": "eslint src/**/*.ts",
     "format": "prettier --write src/**/*.ts",
     "docker:build": "docker build -t tarot-mcp .",
-    "docker:run": "docker run -p 3000:3000 tarot-mcp",
+    "docker:run": "docker run -p 9801:3000 tarot-mcp",
     "docker:compose": "docker-compose up -d"
   },
   "keywords": [
