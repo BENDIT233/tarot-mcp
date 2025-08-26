@@ -11,38 +11,69 @@ import { TarotServer } from "../tarot-server.js";
  */
 export class StreamableHTTPServer {
   private app: express.Application;
-  private server: McpServer;
   private tarotServer: TarotServer;
   private port: number;
   private httpServer?: any;
-  private transports: Record<string, StreamableHTTPServerTransport> = {};
+  private sessions: Map<string, { transport: StreamableHTTPServerTransport; server: McpServer }> = new Map();
 
-  constructor(tarotServer: TarotServer, port: number = 3000) {
+
+  constructor(tarotServer: TarotServer, port: number = 9801) {
     this.port = port;
     this.app = express();
     this.tarotServer = tarotServer;
     
-    // Create MCP server instance
-    this.server = new McpServer({
+    this.setupMiddleware();
+    this.setupRoutes();
+  }
+
+  /**
+   * Get or create session for the given session ID
+   */
+  private async getOrCreateSession(sessionId: string): Promise<{ transport: StreamableHTTPServerTransport; server: McpServer }> {
+    // Check if session already exists
+    if (this.sessions.has(sessionId)) {
+      console.log(`🔗 Using existing session: ${sessionId}`);
+      return this.sessions.get(sessionId)!;
+    }
+    
+    console.log(`🆕 Creating new session: ${sessionId}`);
+    
+    // Create new MCP server instance for this session
+    const server = new McpServer({
       name: "tarot-mcp-server",
       version: "1.0.0",
       description: "Professional Rider-Waite tarot card reading server"
     });
-
-    this.setupMiddleware();
-    this.setupMCPTools();
-    this.setupRoutes();
+    
+    // Setup MCP tools for this server
+    this.setupMCPTools(server);
+    
+    // Create new transport instance for this session
+    const transport = new StreamableHTTPServerTransport({
+      sessionIdGenerator: () => sessionId
+    });
+    
+    // Connect server to transport
+    await server.connect(transport);
+    
+    // Store session
+    const session = { transport, server };
+    this.sessions.set(sessionId, session);
+    
+    console.log(`✅ Session created and connected: ${sessionId}`);
+    return session;
   }
 
   /**
    * Setup Express middleware
    */
   private setupMiddleware(): void {
-    // CORS configuration for MCP clients
+    // CORS configuration for MCP clients (Dify compatible)
     this.app.use(cors({
       origin: '*',
       methods: ['GET', 'POST', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Accept', 'mcp-session-id'],
+      exposedHeaders: ['mcp-session-id'],
       credentials: false
     }));
     
@@ -53,11 +84,11 @@ export class StreamableHTTPServer {
   /**
    * Setup MCP tools using the new McpServer API
    */
-  private setupMCPTools(): void {
+  private setupMCPTools(server: McpServer): void {
     // Register all tarot tools with proper Zod schemas
     
     // Get card info tool
-    this.server.registerTool(
+      server.registerTool(
       "get_card_info",
       {
         title: "Get Card Info",
@@ -81,7 +112,7 @@ export class StreamableHTTPServer {
     );
 
     // List all cards tool
-    this.server.registerTool(
+      server.registerTool(
       "list_all_cards",
       {
         title: "List All Cards",
@@ -104,7 +135,7 @@ export class StreamableHTTPServer {
     );
 
     // Perform reading tool
-    this.server.registerTool(
+      server.registerTool(
       "perform_reading",
       {
         title: "Perform Reading",
@@ -129,7 +160,7 @@ export class StreamableHTTPServer {
     );
 
     // Search cards tool
-    this.server.registerTool(
+      server.registerTool(
       "search_cards",
       {
         title: "Search Cards",
@@ -155,7 +186,7 @@ export class StreamableHTTPServer {
     );
 
     // Find similar cards tool
-    this.server.registerTool(
+      server.registerTool(
       "find_similar_cards",
       {
         title: "Find Similar Cards",
@@ -179,7 +210,7 @@ export class StreamableHTTPServer {
     );
 
     // Get database analytics tool
-    this.server.registerTool(
+      server.registerTool(
       "get_database_analytics",
       {
         title: "Get Database Analytics",
@@ -200,7 +231,7 @@ export class StreamableHTTPServer {
     );
 
     // Get random cards tool
-    this.server.registerTool(
+      server.registerTool(
       "get_random_cards",
       {
         title: "Get Random Cards",
@@ -224,7 +255,7 @@ export class StreamableHTTPServer {
     );
 
     // Create custom spread tool
-    this.server.registerTool(
+      server.registerTool(
       "create_custom_spread",
       {
         title: "Create Custom Spread",
@@ -291,65 +322,86 @@ export class StreamableHTTPServer {
       });
     });
 
-    // Main MCP endpoint - supports both POST and GET for Streamable HTTP
+    // Main MCP endpoint - handle all requests
     this.app.all('/mcp', async (req, res) => {
+      // Set CORS headers
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, mcp-session-id');
+      
+      if (req.method === 'OPTIONS') {
+        res.status(200).end();
+        return;
+      }
+      
       try {
-        // Set CORS headers for MCP requests
-        res.header('Access-Control-Allow-Origin', '*');
-        res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-        res.header('Access-Control-Allow-Headers', 'Content-Type, Accept, mcp-session-id');
+        console.log(`📨 MCP ${req.method} request received:`, {
+          url: req.url,
+          originalUrl: req.originalUrl,
+          path: req.path,
+          headers: req.headers,
+          body: req.body
+        });
         
-        if (req.method === 'OPTIONS') {
-          return res.status(200).end();
+        // Check for invalid characters in URL
+        if (req.originalUrl.includes('⁠') || req.originalUrl.includes('%E2%81%A0')) {
+          console.error('❌ Invalid character detected in URL:', req.originalUrl);
+          res.status(400).json({
+            jsonrpc: '2.0',
+            error: {
+              code: -32600,
+              message: 'Invalid Request: URL contains invalid characters'
+            }
+          });
+          return;
         }
         
-        // Get or create session ID
+        // Check if this is an initialization request
+        const isInitializeRequest = req.body && req.body.method === 'initialize';
+        
         let sessionId = req.headers['mcp-session-id'] as string;
         
-        if (!sessionId) {
-          // Generate new session ID for initial connection
-          sessionId = Math.random().toString(36).substring(2, 15);
-          res.setHeader('mcp-session-id', sessionId);
+        if (isInitializeRequest && !sessionId) {
+          // For initialization requests without session ID, generate a new one
+          // According to MCP spec, server MAY assign session ID at initialization time
+          const timestamp = Date.now();
+          const randomString = Math.random().toString(36).substring(2, 15);
+          sessionId = `mcp-${timestamp}-${randomString}`;
+          console.log(`🆕 Generated new session ID for initialization: ${sessionId}`);
+          
+          // Set the session ID in response header as per MCP spec
+          res.setHeader('Mcp-Session-Id', sessionId);
+        } else if (!sessionId) {
+          // For non-initialization requests without session ID, return 400 as per MCP spec
+          console.error('❌ Missing Mcp-Session-Id header for non-initialization request');
+          res.status(400).json({
+            jsonrpc: '2.0',
+            error: {
+              code: -32000,
+              message: 'Bad Request: Mcp-Session-Id header is required'
+            },
+            id: req.body?.id || null
+          });
+          return;
         }
         
-        // Get or create transport for this session
-        let transport = this.transports[sessionId];
-        if (!transport) {
-          transport = new StreamableHTTPServerTransport({
-            sessionIdGenerator: () => sessionId
-          });
-          
-          // Store transport for this session
-          this.transports[sessionId] = transport;
-          
-          // Connect server to transport
-          await this.server.connect(transport);
-          
-          console.log(`New MCP session created: ${sessionId}`);
-        }
+        // Get or create session for this session ID
+        const session = await this.getOrCreateSession(sessionId);
         
-        // Handle the request with proper parameters
-        if (req.method === 'POST') {
-          await transport.handleRequest(req, res, req.body);
-        } else if (req.method === 'GET') {
-          // For GET requests, return server info or handle SSE
-          res.json({
-            name: 'Tarot MCP Server',
-            version: '1.0.0',
-            transport: 'streamable-http',
-            endpoint: '/mcp',
-            status: 'ready'
-          });
-        }
+        // Handle request with session-specific transport
+        console.log(`🔄 Handling request with session transport: ${sessionId}`);
+        await session.transport.handleRequest(req, res, req.body);
+        console.log(`✅ Request handled successfully for session: ${sessionId}`);
         
       } catch (error) {
-        console.error('MCP request error:', error);
+        console.error('❌ MCP request error:', error);
         if (!res.headersSent) {
           res.status(500).json({
             jsonrpc: '2.0',
             error: {
               code: -32603,
-              message: 'Internal error'
+              message: 'Internal error',
+              data: error instanceof Error ? error.message : String(error)
             }
           });
         }
@@ -400,27 +452,33 @@ export class StreamableHTTPServer {
    * Start the HTTP server
    */
   public async start(): Promise<void> {
-    return new Promise((resolve, reject) => {
-      try {
-        this.httpServer = this.app.listen(this.port, '0.0.0.0', () => {
-          console.log(`🔮 Tarot MCP Server (Streamable HTTP) running on http://0.0.0.0:${this.port}`);
-          console.log(`🌐 MCP endpoint: http://0.0.0.0:${this.port}/mcp`);
-          console.log(`❤️  Health check: http://0.0.0.0:${this.port}/health`);
-          console.log(`📋 Server info: http://0.0.0.0:${this.port}/info`);
-          console.log(`🔗 Dify integration: Use http://your-server:${this.port}/mcp as MCP server URL`);
-          resolve();
-        });
+    try {
+      return new Promise((resolve, reject) => {
+        try {
+          this.httpServer = this.app.listen(this.port, '0.0.0.0', () => {
+            console.log(`🔮 Tarot MCP Server (Streamable HTTP) running on http://0.0.0.0:${this.port}`);
+            console.log(`🌐 MCP endpoint: http://0.0.0.0:${this.port}/mcp`);
+            console.log(`❤️  Health check: http://0.0.0.0:${this.port}/health`);
+            console.log(`📋 Server info: http://0.0.0.0:${this.port}/info`);
+            console.log(`🔗 Dify integration: Use http://your-server:${this.port}/mcp as MCP server URL`);
+            console.log(`🛠️  Available tools: ${this.tarotServer.getAvailableTools().length}`);
+            resolve();
+          });
 
-        this.httpServer.on('error', (error: any) => {
-          console.error('HTTP server error:', error);
+          this.httpServer.on('error', (error: any) => {
+            console.error('HTTP server error:', error);
+            reject(error);
+          });
+
+        } catch (error) {
+          console.error('Failed to start HTTP server:', error);
           reject(error);
-        });
-
-      } catch (error) {
-        console.error('Failed to start HTTP server:', error);
-        reject(error);
-      }
-    });
+        }
+      });
+    } catch (error) {
+      console.error('Failed to connect transport:', error);
+      throw error;
+    }
   }
 
   /**

@@ -94,3 +94,6 @@ pids/
 
 # Docker
 .dockerignore
+dify-mcp-config.md
+.gitignore
+

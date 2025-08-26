@@ -13,7 +13,7 @@ export class TarotHttpServer {
   private port: number;
   private serverType: 'streamable' | 'fastmcp';
 
-  constructor(tarotServer: TarotServer, port: number = 3000, serverType: 'streamable' | 'fastmcp' = 'streamable') {
+  constructor(tarotServer: TarotServer, port: number = 9801, serverType: 'streamable' | 'fastmcp' = 'streamable') {
     this.port = port;
     this.tarotServer = tarotServer;
     this.serverType = serverType;

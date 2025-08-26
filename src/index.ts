@@ -21,7 +21,7 @@ function parseArgs(): {
 } {
   const args = process.argv.slice(2);
   let transport: 'stdio' | 'http' | 'streamable' | 'fastmcp' = 'stdio';
-  let port = 3000;
+  let port = 9801;
   let help = false;
 
   for (let i = 0; i < args.length; i++) {

@@ -24,12 +24,12 @@ RUN adduser -S tarot -u 1001
 RUN chown -R tarot:nodejs /app
 USER tarot
 
-# Expose port 3000
-EXPOSE 3000
+# Expose port 9801
+EXPOSE 9801
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get({hostname: '127.0.0.1', port: 3000, path: '/health'}, (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
+  CMD node -e "require('http').get({hostname: '127.0.0.1', port: 9801, path: '/health'}, (res) => { process.exit(res.statusCode === 200 ? 0 : 1) }).on('error', () => process.exit(1))"
 
 # Default command - run HTTP server with streamable support
-CMD ["node", "dist/index.js", "--transport", "streamable", "--port", "3000"]
+CMD ["node", "dist/index.js", "--transport", "streamable", "--port", "9801"]
